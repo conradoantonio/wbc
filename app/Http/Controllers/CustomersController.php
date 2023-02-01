@@ -82,13 +82,9 @@ class CustomersController extends Controller
         
         $img = $this->uploadFile($req->file('photo'), 'img/users/clientes', true);
         
-        $item = New User;
-
-        $temporalPassword = Str::random(64);
-
         $customer = new User;
 
-        $customer->password = bcrypt($temporalPassword);// Contraseña que será modificada
+        $customer->password = bcrypt($req->password);// Contraseña que será modificada
         $customer->change_password = 1;
         $customer->fullname = $req->fullname; 
         $customer->email = $req->email;

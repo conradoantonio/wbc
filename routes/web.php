@@ -91,6 +91,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('create-installment-plan',[PaymentsController::class, 'createInstallmentsPlan'])->name('property.createInstallmentsPlan');
         Route::post('filter',[PropertiesController::class, 'filter'])->name('property.filter');
         Route::post('state-account',[PropertiesController::class, 'stateAccount'])->name('property.stateAccount');
+        Route::get('state-account/pdf/{id}',[PropertiesController::class, 'generateStateAccountPdf'])->name('property.generateStateAccountPdf');
+        Route::get('state-account/preview/{id}',[PropertiesController::class, 'generateStateAccountPreview'])->name('property.generateStateAccountPreview');
         Route::post('save',[PropertiesController::class, 'save'])->name('property.save');
         Route::post('update',[PropertiesController::class, 'update'])->name('property.update');
         Route::post('delete',[PropertiesController::class, 'delete'])->name('property.delete');

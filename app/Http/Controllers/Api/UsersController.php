@@ -173,7 +173,6 @@ class UsersController extends Controller
         
         $item->save();
         
-        return response(['msg' => 'Correo enviado exitósamente', 'status' => 'success', 'data' => $newPass], 200);
         $params = array();
 
         $params['view'] = 'mails.reset_password';
@@ -182,8 +181,10 @@ class UsersController extends Controller
         $params['email'] = $item->email;
         $params['password'] = $newPass;
 
-        if ( $this->f_mail( $params ) ) {
-            return response(['msg' => 'Correo enviado exitósamente', 'status' => 'success'], 200);
+        $sended = $this->f_mail( $params );
+
+        if ( $sended['status'] == 'success' ) {
+            return response(['msg' => 'Correo enviado exitósamente', 'status' => 'success', 'data' => $newPass], 200);
         } else{
             return response(['msg' => 'Ocurrió un error tratando de enviar el correo, trate nuevamente', 'status' => 'error'], 200);
         }

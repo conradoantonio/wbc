@@ -86,8 +86,8 @@ trait ConektaMethods
                     [
                         'payment_method' => [
                             'type' => 'card',
-                            'token_id' => 'tok_test_visa_4242'
-                            // "token_id" => $card->token
+                            // 'token_id' => 'tok_test_visa_4242'
+                            "payment_source_id" => $card->token
                         ] //payment_method - use customer's default - a card
                     ]
                 ]

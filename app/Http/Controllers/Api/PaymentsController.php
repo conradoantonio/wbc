@@ -120,7 +120,7 @@ class PaymentsController extends Controller
 
         }
         $msg = "Pago registrado exitósamente";
-        $desc = "Ha registrado un pago para la propiedad ".$property->name." por la cantidad de $".round($req->amount / 100, 2)." MXN.";
+        $desc = "Ha registrado un pago para la propiedad ".$property->name." por la cantidad de $".number_format(round($req->amount / 100, 2), 2)." MXN.";
         $this->sendNotification(2, $msg, $desc, null, null, ['origin' => 'System'], [$req->user()->id]);
         $this->saveNotification($req->user(), $msg, $desc);
         return response(['msg' => $msg, 'status' => 'success', 'data' => $payment->load(['type', 'status'])], 200);

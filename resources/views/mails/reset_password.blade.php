@@ -226,7 +226,7 @@
                                             </tr>
                                             <tr>
                                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                    <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:12px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> Si usted no solicitó el cambio de contraseña, por favor, contáctenos al correo <span style="color:#687ae8; text-decoration: underline;">contacto@culturizate.app</span> </div>
+                                                    <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:12px;font-weight:400;line-height:24px;text-align:left;color:#637381;"> Si usted no solicitó el cambio de contraseña, por favor, contáctenos al correo <span style="color:#687ae8; text-decoration: underline;">contacto@wbc.com</span> </div>
                                                 </td>
                                             </tr>
                                         </table>

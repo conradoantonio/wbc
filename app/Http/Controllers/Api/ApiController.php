@@ -171,7 +171,7 @@ class ApiController extends Controller
      */
     public function webhookSpeiRecurrent(Request $req)
     {
-        // $this->saveLog($req);
+        $this->saveLog($req);
 
         $body = @file_get_contents('php://input');
         $event = json_decode($body);

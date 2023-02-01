@@ -178,22 +178,20 @@ trait GeneralFunctions
     */
     public function f_mail($params)
     {
-        $data = ['message' => 'This is a test!'];
-
-        // Mail::to('anton_con@hotmail.com')->send(new SendGeneralMail($data));
-        $params['view'] = $params['view'] ? $params['view'] : 'mails.general';
-        Mail::send($params['view'], ['content' => $params], function ($message) use($params)
-        {
-            $message->to($params['email']);
-            $message->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'));
-            $message->subject(env('APP_NAME').' | '.$params['subject']);
-        });
-        if ( !Mail::failures() ){
-            //error_log('enviado');
-            return true;
+        try {
+            // $data = ['message' => 'This is a test!'];
+            // Mail::to('anton_con@hotmail.com')->send(new SendGeneralMail($data));
+            $params['view'] = $params['view'] ?? 'mails.general';
+            Mail::send($params['view'], ['content' => $params], function ($message) use($params)
+            {
+                $message->to($params['email']);
+                $message->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'));
+                $message->subject(env('APP_NAME').' | '.$params['subject']);
+            });
+            return ['status' => 'success', 'msg' => 'Correo enviado exitósamente'];
+        } catch (\Exception $e) {
+            return ['status' => 'error', 'msg' => 'Algo salió mal: '.$e->getMessage()];
         }
-        error_log('error_send: '.Mail::failures());
-        return false;
     }
 
     /**

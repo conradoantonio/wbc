@@ -1,26 +1,76 @@
 html{
 	font-family: 'Roboto', sans-serif;
-	margin-right: 0;
+	/*margin-right: 0;*/
+	font-size: 11px;
 	padding: 0;
 }
-a{
-	text-decoration: none;
-	color: black;
+body {
+	text-align: center!important;
+	/*margin-right: 0;*/
+	/* margin: 2mm;
+	padding: 2mm; */
+	padding-top: 30mm;
+	/*width: 700px;
+	margin-top:20mm;*/
 }
-th, td {
-    text-align: center!important;
-    font-size: 14px;
+img.logo {
+	width: 25%;
+	/* opacity: 0.5; */
+	/*width: 30mm;
+	height: 15mm;*/
 }
-h5,
-p{
-	font-size: 15px;
-	padding: 0px;
-	margin: 0px;
+img.water-mark {
+	opacity: 0.1;
+	display: block;
+	padding-top: 35%!important;
+    width: 55%;
 }
-
-h3{
-	padding: 0px;
-	margin-bottom: 0px;
+@font-face {
+	font-family: 'Avenir';
+	src: url('http://localhost/wbc/public/fonts/avenir/Avenir-Book.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Avenir';
+	src: url('http://localhost/wbc/public/fonts/avenir/AvenirNext-Bold.ttf') format('truetype');
+	font-weight: bold;
+}
+@font-face {
+	font-family: 'Avenir';
+	src: url('http://localhost/wbc/public/fonts/avenir/Avenir-Next-LT-Pro-Italic.ttf') format('truetype');
+	font-style: italic;
+}
+.av-font {
+	font-family: 'Avenir'!important;
+}
+.white-space-3:before{
+	content: "\00a0 \00a0 \00a0";
+}
+.white-space-4:before{
+	content: "\00a0 \00a0 \00a0 \00a0";
+}
+.white-space-5:before{
+	content: "\00a0 \00a0 \00a0 \00a0 \00a0";
+}
+.fixed-top{
+	position:fixed; 
+}
+.fixed-middle {
+	position: fixed;
+}
+.capitalize{
+	text-transform: capitalize;
+}
+.uppercase{
+	text-transform: uppercase!important;
+}
+.start-page{
+	padding-top: 5mm;
+}
+.break{
+    display: block;
+}
+.letter-space{
+	letter-spacing: 5px;
 }
 .no-padding{
 	padding: 0px;
@@ -28,78 +78,21 @@ h3{
 .no-margin{
 	margin: 0px;
 }
-img.img-logo{
-	width: 20%;
-}
-.centrar{
-	text-align: center;
-}
-.title{
-	color: #006064;
-}
-.subtitle{
-	color: #004d40;
-}
-
-.rf-laboratory{
-    display: inline-block;
-    width: 210px;
-    height: 75px;
-    margin: 10px;
-    border-bottom: 3px solid gray;
-}
-
-.Shield-Box,
-.RF-Test-Agilent,
-.RF-Test-CMW,
-.RF-Test-CMU{
-    display: inline-block;
-    width: 220px;
-    height: 40px;
-    margin: 5px;
-    border-bottom: 3px solid gray;
-}
-
-.Link-DMS{
-	display: inline-block;
-    width: 700px;
-    height: 80px;
-    border-bottom: 3px solid gray;	
-}
 .justify{
-	text-align: justify;
+	text-align: justify!important;
 }
-body {
-	width: 700px;
-	margin-top:20mm;
+.center{
+	text-align: center!important;
+}
+.left{
+	text-align: left!important;
+}
+.right{
+	text-align: right!important;
+}
+.new-page{
+	page-break-after: always;
 }
 .container{
-	width: 600px;
-}
-.separate{
-	height: 30mm;
-}
-
-.separate2{
-	height: 15mm;
-}
-
-.fixed-top-left{
-	position:fixed; 
-}
-
-.fixed-top-right {
-	position: fixed;
-}
-.logo {
-	width: 30mm;
-	height: 15mm;
-}
-.header-info {
-	margin-right: 12mm;
-	text-align: right;
-	font-size: 12px!important;
-}
-#header{
-	height: 70px;
+	width: 100%;
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+
 use \App\Models\User;
 use \App\Models\Project;
 use \App\Models\Property;
@@ -88,6 +90,32 @@ class PropertiesController extends Controller
         if( !$item ) { return response(['msg' => 'Seleccione una propiedad válida para continuar', 'status' => 'error'], 404); }
 
         return $item;
+    }
+
+    /**
+     * Get the state account from a property
+     *
+     */
+    public function generateStateAccountPdf( $id )
+    {
+        $property = Property::where('id', $id)->with(['owner', 'payments.status', 'installments.status'])->first();
+        
+        // if( !$property ) { return response(['msg' => 'Seleccione una propiedad válida para continuar', 'status' => 'error'], 404); }
+
+        $pdf = PDF::loadView('properties.pdf', ['property' => $property])
+        ->setPaper('letter')->setWarnings(false);
+        return $pdf->stream('estado_cuenta.pdf');
+    }
+
+    /**
+     * Get the state account from a property
+     *
+     */
+    public function generateStateAccountPreview( $id )
+    {
+        $property = Property::where('id', $id)->with(['owner', 'payments.status', 'installments.status'])->first();
+
+        return view('properties.pdf', compact('property'));
     }
 
     /**
