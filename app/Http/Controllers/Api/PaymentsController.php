@@ -47,11 +47,10 @@ class PaymentsController extends Controller
 
             // Aplicaremos la lógica en un cronjob para asignar esta tarjeta a pagos recurrentes siempre y cuando tenga pagos pendientes por hacer
             if ( $req->recurrent == 1 ) {
-                $cardsUser = Card::where('user_id', $req->user()->id)->where('id', '!=', $card->id)->update(['recurrent' => 0]);
                 
-                $card->recurrent = 1;
+                $property->card_id = $card->id;
                 
-                $card->save();
+                $property->save();
             }
 
             #Se guarda la información del pago de conekta en una variable

@@ -19,7 +19,7 @@
                     {!! $item->owner ? '<span class="badge badge-info">'.$item->owner->fullname.'</span>' : '<span class="badge badge-danger">Usuario eliminado</span>' !!}
                 </td>
                 <td class="align-middle">
-                    {!! $item->property ? '<span class="badge badge-info">'.$item->property->name.'</span>' : '<span class="badge badge-danger">Propiedad eliminada</span>' !!}
+                    {!! $item->property ? '<span class="badge badge-info">'.$item->property->name.'</span>' : '<span class="badge badge-danger">N/A</span>' !!}
                 </td>
                 <td class="align-middle">
                     {!! $item->type ? '<span class="badge badge-info">'.$item->type->name.'</span>' : '<span class="badge badge-danger">Desconocido</span>' !!}

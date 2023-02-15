@@ -22,7 +22,7 @@ class Card extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'token', 'last_four', 'brand', 'recurrent'
+        'user_id', 'token', 'last_four', 'brand'
     ];
 
     /**

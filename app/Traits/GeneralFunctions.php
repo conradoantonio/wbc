@@ -251,19 +251,22 @@ trait GeneralFunctions
      */
     public function createNewCustomerPayment(User $user, $amount, $typeId)
     {
-        if ( $user->receive_notifications != 1 ) {
-            return false;
-        }
         $payment = New Payment;
-
+        
         $payment->user_id = $user->id;
         $payment->payment_type_id = $typeId;
         $payment->payment_status_id = 1;
         $payment->amount = $amount;
         $payment->payment_date = date("Y-m-d H:i:s");
-
+        
         $payment->save();
-
+        
+        if ( $user->receive_notifications == 1 ) {// Se envía notificación de su pago recibido exitósamente
+            $msg = "Pago registrado exitósamente";
+            $desc = "Ha registrado un pago por la cantidad de $".number_format(round($amount / 100, 2), 2)." MXN.";
+            $this->sendNotification(2, $msg, $desc, null, null, ['origin' => 'System'], [$user->id]);
+            $this->saveNotification($user, $msg, $desc);
+        }
         return $payment;
     }
 

@@ -182,17 +182,15 @@ class PropertiesController extends Controller
      */
     public function delete(Request $req)
     {
-        $url = 'eventos?vigencia=';
-        $item = Evento::whereIn('id', $req->ids)
+        $msg = count($req->ids) > 1 ? 'los registros' : 'el registro';
+        $item = Property::whereIn('id', $req->ids)
         ->first();
 
         if ( $item ) {
-            $url .= $item->fecha_proxima ? 'activos' : 'pasados';
-
             $item->delete();
-            return response(['msg' => 'Éxito eliminando '.$msg, 'url' => url($url), 'status' => 'success'], 200);
+            return response(['msg' => 'Éxito eliminando '.$msg, 'url' => url('propiedades'), 'status' => 'success'], 200);
         } else {
-            return response(['msg' => 'Error al cambiar el status de '.$msg, 'status' => 'error', 'url' => url($url)], 404);
+            return response(['msg' => 'Error al cambiar el status de '.$msg, 'status' => 'error', 'url' => url('propiedades')], 404);
         }
     }
 }

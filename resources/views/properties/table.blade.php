@@ -14,7 +14,7 @@
             <tr>
                 <td class="align-middle">{{$item->id}}</td>
                 <td class="align-middle">
-                    {!! $item->project ? '<span class="badge badge-info">'.$item->project->name.'</span>' : '<span class="badge badge-danger">No asignado</span>' !!}
+                    {!! $item->project ? '<span class="badge badge-info">'.$item->project->name.'</span>' : '<span class="badge badge-danger">N/A</span>' !!}
                 </td>
                 <td class="align-middle">
                     {!! $item->owner ? '<span class="badge badge-info">'.$item->owner->fullname.'</span>' : '<span class="badge badge-danger">Sin propietario</span>' !!}

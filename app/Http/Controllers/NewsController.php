@@ -53,9 +53,9 @@ class NewsController extends Controller
     {
         $items = NewData::filter( $req->all() )->orderBy('id', 'desc')->get();
 
-        $view = 'projects.table';
+        $view = 'news.table';
         
-        return view($view, compact('items', 'vigencia'));
+        return view($view, compact('items'));
     }
 
     /**
@@ -104,15 +104,16 @@ class NewsController extends Controller
      */
     public function delete(Request $req)
     {
-        $item = Project::whereIn('id', $req->ids)
+        $msg = count($req->ids) > 1 ? 'los registros' : 'el registro';
+        $item = NewData::whereIn('id', $req->ids)
         ->first();
 
         if ( $item ) {
             $this->deletePath($item->photo);
             $item->delete();
-            return response(['msg' => 'Éxito eliminando '.$msg, 'url' => url($url), 'status' => 'success'], 200);
+            return response(['msg' => 'Éxito eliminando '.$msg, 'url' => url('prensa'), 'status' => 'success'], 200);
         } else {
-            return response(['msg' => 'Error al cambiar el status de '.$msg, 'status' => 'error', 'url' => url($url)], 404);
+            return response(['msg' => 'Error al cambiar el status de '.$msg, 'status' => 'error', 'url' => url('prensa')], 404);
         }
     }
 }

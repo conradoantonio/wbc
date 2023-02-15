@@ -39,25 +39,17 @@
                             </div>
                             <div class="col-md-9 text-right my-auto filter-section">
                                 <div class="btn-group row" role="group" aria-label="Basic example">
-                                    <div class="no-pad col-md-3">
+                                    <div class="no-pad col-md-4">
                                         <select class="form-control" name="verificado">
                                             <option value="">Status (Cualquiera)</option>
                                             <option value="0">Inhabilitado</option>
                                             <option value="1">Deshabilitado</option>
                                         </select>
                                     </div>
-                                    {{-- <div class="no-pad col-md-3" style="text-align: left;">
-                                        <select id="categoria_id" name="categoria_id" class="form-control select2" data-msg="Categorías">
-                                            <option value="" selected>Categorías (Cualquiera)</option>
-                                            @foreach($categorias as $categoria)
-                                                <option value="{{$categoria->id}}">{{$categoria->nombre}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div> --}}
-                                    <div class="no-pad col-md-3">
+                                    <div class="no-pad col-md-4">
                                         <input type="text" class="date-picker form-control" name="fecha_inicio" autocomplete="off" placeholder="Fecha registro inicio">
                                     </div>
-                                    <div class="no-pad col-md-3">
+                                    <div class="no-pad col-md-4">
                                         <input type="text" class="date-picker form-control" name="fecha_fin" autocomplete="off" placeholder="Fecha registro fin">
                                     </div>
                                 </div>

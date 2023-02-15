@@ -37,7 +37,7 @@
                                 <input type="text" class="form-control not-empty" disabled name="owner" value="{{$item && $item->owner ? $item->owner->fullname : ''}}" placeholder="" data-msg="Preguntado por">
                             </div>
                             <div class="form-group">
-                                <label>Subject</label>
+                                <label>Título</label>
                                 <input type="text" class="form-control not-empty" name="subject" value="{{$item ? $item->subject : ''}}" placeholder="" data-msg="Título">
                             </div>
                             <div class="form-group">

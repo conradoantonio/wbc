@@ -62,11 +62,12 @@ Route::middleware(['auth'])->group(function () {
 
     // Prensa
     Route::prefix('prensa')->group(function () {
-        Route::get('/',[NewsController::class, 'index'])->name('project.index');
-        Route::get('form/{id?}',[NewsController::class, 'form'])->name('project.form');
-        Route::post('save',[NewsController::class, 'save'])->name('project.save');
-        Route::post('update',[NewsController::class, 'update'])->name('project.update');
-        Route::post('delete',[NewsController::class, 'delete'])->name('project.delete');
+        Route::get('/',[NewsController::class, 'index'])->name('news.index');
+        Route::get('form/{id?}',[NewsController::class, 'form'])->name('news.form');
+        Route::post('filter',[NewsController::class, 'filter'])->name('news.filter');
+        Route::post('save',[NewsController::class, 'save'])->name('news.save');
+        Route::post('update',[NewsController::class, 'update'])->name('news.update');
+        Route::post('delete',[NewsController::class, 'delete'])->name('news.delete');
     });
 
     // Proyectos
@@ -127,13 +128,13 @@ Route::middleware(['auth'])->group(function () {
 
     // Premios
     Route::prefix('premios')->group(function () {
-        Route::get('/',[AwardsController::class, 'index'])->name('payment.index');
-        Route::get('form/{id?}',[AwardsController::class, 'form'])->name('payment.form');
-        Route::post('filter',[AwardsController::class, 'filter'])->name('payment.filter');
-        Route::post('save',[AwardsController::class, 'save'])->name('payment.save');
-        Route::post('update',[AwardsController::class, 'update'])->name('payment.update');
-        Route::post('delete',[AwardsController::class, 'delete'])->name('payment.delete');
-        Route::post('delete/photo',[AwardsController::class, 'deletePhoto'])->name('payment.deletePhoto');
+        Route::get('/',[AwardsController::class, 'index'])->name('award.index');
+        Route::get('form/{id?}',[AwardsController::class, 'form'])->name('award.form');
+        Route::post('filter',[AwardsController::class, 'filter'])->name('award.filter');
+        Route::post('save',[AwardsController::class, 'save'])->name('award.save');
+        Route::post('update',[AwardsController::class, 'update'])->name('award.update');
+        Route::post('delete',[AwardsController::class, 'delete'])->name('award.delete');
+        Route::post('delete/photo',[AwardsController::class, 'deletePhoto'])->name('award.deletePhoto');
     });
 
     // Mi perfil
@@ -158,6 +159,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('save',[CustomersController::class, 'save'])->name('customer.save');
             Route::post('update',[CustomersController::class, 'update'])->name('customer.update');
             Route::post('delete',[CustomersController::class, 'delete'])->name('customer.delete');
+            Route::post('change-status',[CustomersController::class, 'changeStatus'])->name('customer.changeStatus');
         });
     });
 

@@ -23,7 +23,7 @@ class Property extends Model
      * @var array
      */
     protected $fillable = [
-        'project_id', 'user_id', 'name', 'description', 'photo', 'price', 'pay_in_advance', 'monthly_payment', 'signature_date'
+        'project_id', 'user_id', 'card_id', 'name', 'description', 'photo', 'price', 'pay_in_advance', 'monthly_payment', 'signature_date'
     ];
 
     /**
@@ -53,6 +53,15 @@ class Property extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the card recurrent related to the record
+     *
+     */
+    public function card()
+    {
+        return $this->belongsTo(Card::class, 'card_id');
     }
 
     /**

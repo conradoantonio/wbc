@@ -38,17 +38,17 @@
                             </div>
                             <div class="col-md-9 text-right my-auto filter-section">
                                 <div class="btn-group row" role="group" aria-label="Basic example">
-                                    <div class="no-pad col-md-4">
+                                    {{-- <div class="no-pad col-md-4">
                                         <select class="form-control" name="verificado">
                                             <option value="">Verificado (Cualquiera)</option>
                                             <option value="0">No</option>
                                             <option value="1">Si</option>
                                         </select>
-                                    </div>
-                                    <div class="no-pad col-md-4">
+                                    </div> --}}
+                                    <div class="no-pad col-md-6">
                                         <input type="text" class="date-picker form-control" name="fecha_inicio" autocomplete="off" placeholder="Fecha registro inicio">
                                     </div>
-                                    <div class="no-pad col-md-4">
+                                    <div class="no-pad col-md-6">
                                         <input type="text" class="date-picker form-control" name="fecha_fin" autocomplete="off" placeholder="Fecha registro fin">
                                     </div>
                                 </div>

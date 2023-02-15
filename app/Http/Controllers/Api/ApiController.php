@@ -177,24 +177,22 @@ class ApiController extends Controller
         $event = json_decode($body);
 
         // dd($event);
-        $object = $event->data->object;
-        $paymentMethod = @$event->data->object->payment_method;
-        $amount = @$event->data->object->amount;
         $clabe = null;
+        $object = @$event->data->object;
+        $paymentMethod = @$object->charges->data[0]->payment_method;// SPEI
+        $amount = @$event->data->object->amount;
         $type = $event->type;
 
-        if( $type == 'charge.paid' ) {
+        if( $type == 'order.paid' ) {
             if ( $object ) {
                 if ( $paymentMethod ) {
-                    if ( $paymentMethod->type = 'spei' ) {// Revisar si SPEI recurrent es diferente a spei
-                        $clabe = $paymentMethod->clabe;
+                    if ( $paymentMethod->type = 'spei' ) {// Revisar si SPEI recurrent es diferente a SPEI
                         $clabe = $paymentMethod->clabe;
 
                         $user = User::where('clabe', $clabe)->first();
 
                         if ( $user ) {
-                            $payment = $this->createNewCustomerPayment($user, $amount, 3);
-                            // $this->createNewCustomerPayment($user, $amount / 100, $type);
+                            $payment = $this->createNewCustomerPayment($user, $amount / 100, 3);
                         }
                     }
                 }

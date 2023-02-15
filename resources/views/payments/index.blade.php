@@ -159,6 +159,7 @@
         $('.payment_status_data, .payment_date_formated, .payment_created_formated').children().remove();
         $('[name="change_to"]').val("");
         $('[name="property_id"]').children("option").remove();
+        $('[name="property_id"]').append("<option selected value=''>Seleccione una opción</option>");
         properties.forEach(property => {
             $('[name="property_id"]').append("<option value='"+property.id+"'>"+property.name+"</option>");
         });
@@ -170,13 +171,20 @@
             $('[name="property_id"]').prop('disabled', false);
         }
 
-        if ( payment.status.id == 3 ) {// Esperando aprobación
-            $('[name="change_to"]').parent().removeClass("d-none");
-            $('[name="change_to"]').addClass("not-empty");
+        if ( payment.status.id == 3 || !payment.property_id ) {// Esperando aprobación o no cuenta con una propiedad asignada
+            if ( payment.status.id == 3 ) {// Esperando aprobación
+                $('[name="change_to"]').parent().removeClass("d-none");
+                $('[name="change_to"]').addClass("not-empty");
+            } else {
+                $('[name="change_to"]').parent().addClass("d-none");
+                $('[name="change_to"]').removeClass("not-empty");
+                $('[name="change_to"]').val(1);
+            }
             $('.process-payment').removeClass('d-none');
         } else {
             $('[name="change_to"]').parent().addClass("d-none");
             $('[name="change_to"]').removeClass("not-empty");
+            $('[name="change_to"]').val(1);
             $('.process-payment').addClass('d-none');
         }
 

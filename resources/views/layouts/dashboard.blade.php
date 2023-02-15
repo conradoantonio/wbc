@@ -55,7 +55,7 @@
                                                         <td>
                                                             {!! $prox->type ? '<span class="badge badge-info">'.$prox->type->name.'</span>' : '<span class="badge badge-danger">Desconocido</span>' !!}
                                                         </td>
-                                                        <td>{!! $prox->property ? '<span class="badge badge-info">'.$prox->property->name.'</span>' : '<span class="badge badge-danger">Propiedad eliminada</span>' !!}</td>
+                                                        <td>{!! $prox->property ? '<span class="badge badge-info">'.$prox->property->name.'</span>' : '<span class="badge badge-danger">N/A</span>' !!}</td>
                                                         <td>
                                                             {{
                                                                 ( 

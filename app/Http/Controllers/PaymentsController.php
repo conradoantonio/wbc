@@ -126,7 +126,7 @@ class PaymentsController extends Controller
             return response(['msg' => 'Registro no encontrado', 'status' => 'error'], 404); 
         }
 
-        $properties = Property::filter(['owner_id' => $item->owner->id ])->get();
+        $properties = Property::filter(['owner_id' => $item->owner->id ])->withTrashed()->get();
 
         $data = [
             'payment' => $item,
@@ -156,7 +156,7 @@ class PaymentsController extends Controller
         } else {// El pago se procesa exitósamente
             if (! $property ) { return response(['msg' => 'Elija una propiedad para continuar', 'status' => 'error', 'url' => url('pagos')], 404); }
             $msg = "¡Pago aprobado!.";
-            $content = "El pago de la propiedad ".$item->property->name." ha sido aprobado exitósamente.";
+            $content = "El pago de la propiedad ".$property->name." ha sido aprobado exitósamente.";
 
             $item->property_id = $property->id;
             $item->payment_status_id = 1;// Pagado

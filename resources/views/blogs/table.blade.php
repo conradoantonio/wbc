@@ -12,7 +12,9 @@
         @foreach($items as $item)
             <tr>
                 <td class="align-middle">{{$item->id}}</td>
-                <td class="align-middle">{{$item->project->name}}</td>
+                <td class="align-middle">
+                    {!! $item->project ? '<span class="badge badge-info">'.$item->project->name.'</span>' : '<span class="badge badge-danger">N/A</span>' !!}
+                </td>
                 <td class="align-middle">{{$item->title}}</td>
                 <td class="align-middle">{{strftime('%d', strtotime($item->date)).' de '.strftime('%B', strtotime($item->date)). ' del '.strftime('%Y', strtotime($item->date))}}</td>
                 <td class="text-center align-middle">
