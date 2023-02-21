@@ -83,12 +83,21 @@ class Property extends Model
     }
 
     /**
+     * Get the next payment of the property
+     *
+     */
+    public function nextInstallment()
+    {
+        return $this->hasMany(Installment::class, 'property_id')->orderBy('date', 'asc')->first();
+    }
+
+    /**
      * Get the installments dates related to the record
      *
      */
     public function installments()
     {
-        return $this->hasMany(Installment::class, 'property_id')->orderBy('date', 'asc');
+        return $this->hasMany(Installment::class, 'property_id')->orderBy('id', 'asc');// Dejar date
     }
 
     /**

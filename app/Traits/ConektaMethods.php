@@ -53,7 +53,7 @@ trait ConektaMethods
      * @param User $user (nullable)
      * @param String $cardtoken: El token de la tarjeta de stripe.js (tok_1JY1yhFCiAPeuM1vJY60BoVg)
      */
-    public function makePayment(Request $req, User $user, Card $card, $payment, $currency = 'MXN')
+    public function makePayment(Request $req = null, User $user, Card $card, $payment, $currency = 'MXN')
     {
         try {
             $customer = \Conekta\Customer::find($user->payment_token);
@@ -147,7 +147,7 @@ trait ConektaMethods
         } catch (\Conekta\ParameterValidationError $e) {
             return ['msg' => 'Error al procesar la tarjeta, parámetro erróneo: '.$e->getMessage(), 'status' => 'error'];
         } catch (\Conekta\Handler $error){
-            return ['msg' => $error->getMesage(), 'status' => 'error'];
+            return ['msg' => $error->getMessage(), 'status' => 'error'];
         } catch (\Exception $e) {
             return ['msg' => 'Error al registrar la tarjeta, trate usando otros datos:'.$e->getMessage(), 'status' => 'error'];
         }
@@ -242,11 +242,11 @@ trait ConektaMethods
             return ['msg' => 'Pedido por SPEI generado correctamente', 'status' => 'success', 'data' => $order];
 
         } catch ( \Conekta\ProcessingError $error ) {
-            return ['msg' => $error->getMesage(), 'status' => 'error'];
+            return ['msg' => $error->getMessage(), 'status' => 'error'];
         } catch ( \Conekta\ParameterValidationError $error ) {
             return ['msg' => $error->message, 'status' => 'error'];
         } catch ( \Conekta\Handler $error ) {
-            return ['msg' => $error->getMesage(), 'status' => 'error'];
+            return ['msg' => $error->getMessage(), 'status' => 'error'];
         } catch ( \Exception $e ) {
             error_log('Error al crear la órden de pago: '. $e->getMessage(), 0);
             return ['msg' => 'Error al crear la órden de pago de SPEI, verifique su método de pago', 'status' => 'error'];

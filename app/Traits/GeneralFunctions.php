@@ -16,6 +16,7 @@ use \App\Models\Notification;
 // use \App\Mail\SendGeneralMail;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log as Logs;
 use Illuminate\Support\Facades\File;
 
 trait GeneralFunctions
@@ -82,6 +83,29 @@ trait GeneralFunctions
             //code...
         } catch (\Exception $ex) {
             logger('Error al eliminar un archivo o ruta: '.$ex->getMessage());
+            // dd('Exception',$ex);
+            return false;
+        // } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    /**
+     * Delete a path/file from server
+     *
+     */
+    public function createPath($path)
+    {
+        try {
+            $fullPath = public_path( $path );
+
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                return str_replace("/", "\\", $fullPath);// Código para windows
+            } else {
+                return $fullPath; //Código para linux
+            }
+        } catch (\Exception $ex) {
+            Logs::error('Error al eliminar un archivo o ruta: '.$ex->getMessage());
             // dd('Exception',$ex);
             return false;
         // } catch (\Throwable $th) {

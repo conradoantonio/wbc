@@ -53,7 +53,7 @@ class CustomersController extends Controller
      */
     public function form($id = 0)
     {
-        $title = "Formulario de usuario de app";
+        $title = "Formulario de cliente";
         $menu = "Usuarios";
         $item = null;
 

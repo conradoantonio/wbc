@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Estado de cuenta</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.png') }}"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{asset('css/pdf.css')}}">
     <style>
@@ -48,6 +49,10 @@
             border-style: solid!important; 
             border-color: black!important;
             background-color: white!important;
+        }
+        
+        .danger-text {
+            color: red!important;
         }
     </style>
 	{{-- <link rel="stylesheet" type="text/css" href="{{asset('css/atmos.css')}}"> --}}
@@ -102,32 +107,32 @@
                 <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">${{number_format($property->price, 2)}}</td>
             </tr>
             <tr>
-                <td scope="col" class="black-bg" style="width:20%; text-align: center;">MT2</td>
-                <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">N/A</td>
+                {{-- <td scope="col" class="black-bg" style="width:20%; text-align: center;">MT2</td>
+                <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">N/A</td> --}}
                 <td scope="col" class="black-bg" style="width:20%; text-align: center;">Total pagado</td>
                 <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">${{number_format($property->payments->sum('amount'), 2)}}</td>
+                <td scope="col" class="black-bg" style="width:20%; text-align: center;">Total por pagar</td>
+                <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">${{ number_format( ($property->price - $property->payments->sum('amount') ), 2) }}</td>
             </tr>
             <tr>
-                <td scope="col" class="white-bg" style="width:20%; text-align: center;">Precio MT2</td>
-                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">N/A</td>
+                {{-- <td scope="col" class="white-bg" style="width:20%; text-align: center;">Precio MT2</td>
+                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">N/A</td> --}}
                 {{-- <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">Ciudad deportiva SC 20,21 y 23 Act. Regular a 48 meses</td> --}}
-                <td scope="col" class="white-bg" style="width:20%; text-align: center;">Total por pagar</td>
-                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">${{ number_format( ($property->price - $property->payments->sum('amount') ), 2) }}</td>
             </tr>
             <tr>
                 <td scope="col" class="" style="width:20%; text-align: center;"></td>
                 <td scope="col" class="" style="width:30%; text-align: center;"></td>
-                <td scope="col" class="black-bg" style="width:20%; text-align: center;">Total vencido</td>
-                <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">${{number_format($property->payments->where('payment_status_id', 4)->sum('amount'), 2)}}</td>
+                <td scope="col" class="white-bg" style="width:20%; text-align: center;">Total vencido</td>
+                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">${{number_format($property->payments->where('payment_status_id', 4)->sum('amount'), 2)}}</td>
             </tr>
             <tr>
                 <td scope="col" class="black-bg" style="width:20%; text-align: center;">Cuenta transferencias STP</td>
-                <td scope="col" class="gray-bg uppercase" style="text-align: center;" colspan="3">2831273123123</td>
+                <td scope="col" class="gray-bg uppercase" style="text-align: center;" colspan="3">{{@$property->owner->clabe}}</td>
             </tr>
-            <tr>
+            {{-- <tr>
                 <td scope="col" class="black-bg" style="width:20%; text-align: center;">Referencia para depósitos</td>
                 <td scope="col" class="gray-bg uppercase" style="text-align: center;" colspan="3"></td>
-            </tr>
+            </tr> --}}
         </tbody>
     </table>
 
@@ -154,15 +159,18 @@
                     <td scope="col" class="white-bg" style="width:19%; text-align: center;">Pagado</td>
                 </tr>
             @endif
-            @foreach($property->installments as $key => $installment)
+            @foreach($property->installments->whereIn('installment_status_id', [1,3]) as $key => $installment)
                 <tr>
-                    <td scope="col" class="white-bg" style="width:5%; text-align: center;">{{ $key + ($property->pay_in_advance ? 2 : 1) }}</td>
+                    <td scope="col" class="white-bg" style="width:5%; text-align: center;">{{ $counter }}</td>
                     <td scope="col" class="white-bg" style="width:19%; text-align: center;">{{$installment->date}}</td>
                     <td scope="col" class="white-bg" style="width:19%; text-align: center;">${{number_format($installment->amount,2)}}</td>
                     <td scope="col" class="white-bg" style="width:19%; text-align: center;">${{number_format($installment->amount - $installment->amount_paid,2)}}</td>
                     <td scope="col" class="white-bg" style="width:19%; text-align: center;">Mensualidad</td>
-                    <td scope="col" class="white-bg" style="width:19%; text-align: center;">{{$installment->status->name}}</td>
+                    <td scope="col" class="white-bg {{$installment->status->id == 4 ? 'danger-text' : ''}}" style="width:19%; text-align: center;">{{$installment->status->name}}</td>
                 </tr>
+                @php
+                    $counter ++;
+                @endphp
             @endforeach
         </tbody>
     </table>

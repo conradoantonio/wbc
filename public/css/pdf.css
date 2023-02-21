@@ -25,7 +25,7 @@ img.water-mark {
 	padding-top: 35%!important;
     width: 55%;
 }
-@font-face {
+/* @font-face {
 	font-family: 'Avenir';
 	src: url('http://localhost/wbc/public/fonts/avenir/Avenir-Book.ttf') format('truetype');
 }
@@ -41,7 +41,7 @@ img.water-mark {
 }
 .av-font {
 	font-family: 'Avenir'!important;
-}
+} */
 .white-space-3:before{
 	content: "\00a0 \00a0 \00a0";
 }

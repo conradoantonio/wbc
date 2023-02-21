@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use PDF;
 use Hash;
 
 use \App\Models\User;
@@ -271,9 +272,21 @@ class UsersController extends Controller
      */
     public function accountStatus(Request $req)
     {
-        $property = Property::where('user_id', $req->user()->id)->where('id', $req->property_id)->first();
-        if (! $property ) { return response([ 'msg' => "Seleccione una propiedad para generar un estado de cuenta", 'status' => 'error'], 200); }
+        $timer = microtime();
+        $timer = str_replace([' ','.'], '', $timer);
+        $mainPath = 'pdf/'.$timer.'.pdf';
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $mainPath = str_replace("/", "\\", $mainPath);
+        } 
+        $fullPath = $this->createPath($mainPath);
+        $property = Property::where('user_id', $req->user()->id)->where('id', $req->property_id)->with(['owner', 'payments.status', 'installments.status'])->first();
+        // dd($property->installments->whereIn('installment_status_id', [1,2])->count());
+        if( !$property ) { return response(['msg' => 'Seleccione una propiedad válida para continuar', 'status' => 'error'], 404); }
 
-        return response(['msg' => 'Estado de cuenta generado exitósamente', 'status' => 'success', 'url' => asset('img/estado-de-cuenta/example.pdf')], 200);
+        $counter = $property->pay_in_advance ? 2 : 1;
+        $pdf = PDF::loadView('properties.pdf', ['property' => $property, 'counter' => $counter])
+        ->setPaper('letter')->setWarnings(false)->save($fullPath);
+
+        return response(['msg' => 'Estado de cuenta generado exitósamente', 'status' => 'success', 'url' => asset($mainPath)], 200);
     }
 }

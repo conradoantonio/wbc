@@ -190,7 +190,7 @@
                     <li class="menu-item">
                         @if( in_array(auth()->user()->role->name, ['Administrador']) )
                         <a href="{{url('usuarios/clientes')}}" class="menu-link">
-                            <span class="menu-label"><span class="menu-name {{ ( in_array($menu, ['Usuarios']) && in_array($title, ['Promotores', 'Formulario de cliente']) ) ? 'sub-ative' :'' }}">Clientes</span></span>
+                            <span class="menu-label"><span class="menu-name {{ ( in_array($menu, ['Usuarios']) && in_array($title, ['Clientes', 'Formulario de cliente']) ) ? 'sub-ative' :'' }}">Clientes</span></span>
                         </a>
                         @endif
                     </li>

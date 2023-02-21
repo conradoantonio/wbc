@@ -8,6 +8,8 @@ use \App\Models\User;
 use \App\Models\Project;
 use \App\Models\Property;
 
+// use Illuminate\Support\Str;
+
 use Illuminate\Http\Request;
 
 class PropertiesController extends Controller
@@ -98,13 +100,18 @@ class PropertiesController extends Controller
      */
     public function generateStateAccountPdf( $id )
     {
+        $timer = microtime();
+        $timer = str_replace([' ','.'], '', $timer);
+        $mainPath = 'pdf/'.$timer.'.pdf';
+        $fullPath = $this->createPath($mainPath);
         $property = Property::where('id', $id)->with(['owner', 'payments.status', 'installments.status'])->first();
-        
-        // if( !$property ) { return response(['msg' => 'Seleccione una propiedad válida para continuar', 'status' => 'error'], 404); }
+
+        if( !$property ) { return response(['msg' => 'Seleccione una propiedad válida para continuar', 'status' => 'error'], 404); }
 
         $pdf = PDF::loadView('properties.pdf', ['property' => $property])
-        ->setPaper('letter')->setWarnings(false);
-        return $pdf->stream('estado_cuenta.pdf');
+        ->setPaper('letter')->setWarnings(false)->save($fullPath);
+
+        return response(['msg' => 'Estado de cuenta generado exitósamente', 'status' => 'success', 'url' => $fullPath], 200);
     }
 
     /**

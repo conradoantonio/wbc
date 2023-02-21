@@ -42,10 +42,14 @@ Route::prefix('v1')->group(function () {
     Route::get('legal-info',[ApiController::class, 'getLegalInfo'])->name('getLegalInfo');
     Route::get('awards',[AwardsController::class, 'index'])->name('getAwards');
     
+    // Estado de cuenta
+    Route::get('account-status/{id}',[UsersController::class, 'accountStatus'])->name('accountStatus');
+
     // Authentication required
     Route::group(['middleware' => ['auth:sanctum']], function() {
         Route::post('logout',[UsersController::class, 'logoutCustomer'])->name('logoutCustomer');
         Route::get('notifications',[UsersController::class, 'getNotifications'])->name('getNotifications');
+        // Route::get('account-status/{id}',[UsersController::class, 'accountStatus'])->name('accountStatus');
         Route::post('notifications',[UsersController::class, 'updateNotification'])->name('updateNotification');
         Route::post('recover-password',[UsersController::class, 'recoverPassword'])->name('recoverPassword');
         Route::post('user',[UsersController::class, 'updateUser'])->name('updateUser');
