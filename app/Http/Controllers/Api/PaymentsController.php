@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use \App\Models\Card;
 use \App\Models\User;
+use \App\Models\Project;
 use \App\Models\Payment;
 use \App\Models\Property;
 use \App\Models\PaymentType;
@@ -11,10 +12,75 @@ use \App\Models\Installment;
 use \App\Models\PaymentStatus;
 
 use App\Http\Controllers\Controller;
+
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
 {
+    /**
+     * Get filters for payments view on app (only admin)
+     *
+     * @param  Request  $request
+     */
+    public function getFilters(Request $req)
+    {
+        $filters = [
+            'user' => $req->user(), 
+            'limit' => 100, 
+        ];
+
+        $earningProject = [];
+        $items = Payment::filter( $filters )->orderBy('id', 'desc')->get();
+        $projects = Project::all();
+
+        foreach ( $projects as $project ) {
+            $earningProject[ $project->id ] = [
+                'id' => $project->id,
+                'name' => $project->name,
+                'total' => Payment::where('payment_status_id', 1)->whereHas('property', function($query) use($project) {
+                    $query->where('project_id', $project->id);
+                })->sum('amount'),
+            ];
+        }
+
+        $data['filters'] = [
+            'projects' => $projects,
+            'status' => PaymentStatus::all(),
+            'owners' => User::where('role_id', 2)->get()
+        ];
+
+        $data['info'] = [
+            'total_earnings'  => Payment::where('payment_status_id', 1)->sum('amount'),
+            'properties_sold' => Property::whereHas('payments', function($query){
+                $query->where('payment_status_id', 1);
+            })->count(),
+            'total_by_properties' => $earningProject,
+        ];
+
+        return($data);
+
+        return response(['msg' => 'Filtros obtenidos exitósamente', 'status' => 'success', 'data' => $data], 200);
+    }
+
+    /**
+     * Get all payments (only admin)
+     *
+     * @param  Request  $request
+     */
+    public function getPayments(Request $req)
+    {
+        $extraFilters = [ 
+            'user' => $req->user(),
+            'limit' => $req->limit ?? 100
+         ];
+
+        $req->request->add( $extraFilters );
+        
+        $items = Payment::filter( $req->all() )->orderBy('id', 'desc')->get();
+
+        return response(['msg' => 'Pagos obtenidos exitósamente', 'status' => 'success', 'data' => $items->load(['type', 'status', 'property', 'owner'])], 200);
+    }
     /**
      * Pay order products
      *

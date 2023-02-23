@@ -80,7 +80,8 @@ class UsersController extends Controller
     public function signInCustomer(Request $req)
     {
         $user = User::where('email', $req->email)
-        ->whereIn('role_id', [2])
+        ->whereIn('role_id', [1,2])
+        ->with(['role'])
         ->first();
         if ( $user ) {
             // Native login

@@ -64,5 +64,9 @@ Route::prefix('v1')->group(function () {
         Route::get('cards',[CardsController::class, 'index'])->name('cards.get');
         Route::post('cards',[CardsController::class, 'save'])->name('cards.save');
         Route::post('make-payment',[PaymentsController::class, 'processOrder'])->name('payment.save');
+
+        // Payment methods (only admin)
+        Route::middleware('role:Administrador')->get('payments/filters',[PaymentsController::class, 'getFilters'])->name('payment.getFilters');
+        Route::middleware('role:Administrador')->post('payments',[PaymentsController::class, 'getPayments'])->name('payment.get');
     });
 });
