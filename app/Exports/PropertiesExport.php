@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Cliente;
+use App\Models\Property;
 
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -10,8 +10,9 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+// use Maatwebsite\Excel\Concerns\FromCollection;
 
-class ClienteExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyles
+class PropertiesExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyles
 {
     /**
     * Items that has event data
@@ -71,7 +72,7 @@ class ClienteExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
             // 'B2' => ['font' => ['italic' => true]],
 
             // Styling an entire column.
-            'A:K'  => [
+            'A:H'  => [
                 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER
                 ]
@@ -79,3 +80,4 @@ class ClienteExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyl
         ];
     }
 }
+

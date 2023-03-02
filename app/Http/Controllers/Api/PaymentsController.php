@@ -35,12 +35,16 @@ class PaymentsController extends Controller
         $projects = Project::all();
 
         foreach ( $projects as $project ) {
+            $totalPayment = Payment::where('payment_status_id', 1)->whereHas('property', function($query) use($project) {
+                $query->where('project_id', $project->id);
+            })->sum('amount');
+
+            $totalAdvance = Property::whereHas('installments')->where('project_id', $project->id)->sum('pay_in_advance');
+
             $earningProject[ $project->id ] = [
                 'id' => $project->id,
                 'name' => $project->name,
-                'total' => Payment::where('payment_status_id', 1)->whereHas('property', function($query) use($project) {
-                    $query->where('project_id', $project->id);
-                })->sum('amount'),
+                'total' => $totalPayment + $totalAdvance,
             ];
         }
 
@@ -50,9 +54,12 @@ class PaymentsController extends Controller
             'owners' => User::where('role_id', 2)->get()
         ];
 
+        $totalEarningsPayment = Payment::where('payment_status_id', 1)->sum('amount');
+        $totalEarningsAdvance = Property::whereHas('installments')->sum('pay_in_advance');
+
         $data['info'] = [
-            'total_earnings'  => Payment::where('payment_status_id', 1)->sum('amount'),
-            'properties_sold' => Property::whereHas('payments', function($query){
+            'total_earnings'  => ( $totalEarningsPayment + $totalEarningsAdvance ),
+            'properties_sold' => Property::whereHas('payments', function($query) {
                 $query->where('payment_status_id', 1);
             })->count(),
             'total_by_properties' => $earningProject,

@@ -287,7 +287,6 @@
 <script src="{{ asset('js/validfunctions.js')}}"></script>
 <script src="{{ asset('js/globalFunctions.js?v=1.2')}}"></script>
 <script src="{{ asset('vendor/blockui/jquery.blockUI.js')}}"></script>
-<script src="{{ asset('vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{ asset('vendor/timepicker/bootstrap-timepicker.min.js')}}"></script>
 <script src="{{ asset('vendor/dropzone/dropzone.js') }}"></script>
 <script src="{{ asset('vendor/jquery.mask/jquery.mask.min.js') }}"></script>

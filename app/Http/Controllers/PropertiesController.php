@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use PDF;
+use Excel;
 
 use \App\Models\User;
 use \App\Models\Project;
 use \App\Models\Property;
 
+use \App\Exports\PropertiesExport;
 // use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
@@ -199,5 +201,37 @@ class PropertiesController extends Controller
         } else {
             return response(['msg' => 'Error al cambiar el status de '.$msg, 'status' => 'error', 'url' => url('propiedades')], 404);
         }
+    }
+
+    /**
+     * Export the orders to excel according to the filters.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function export( Request $req )
+    {
+        $extraFilters = [ 'user' => auth()->user() ];
+        $req->request->add( $extraFilters );
+        $items = Property::filter( $req->all() )->orderBy('id', 'desc')->get();
+        $rows = $titulos = array();
+
+        foreach ( $items as $item ) {
+            $rows [] = [
+                'ID propiedad'        => $item->id,
+                'Nombre de propiedad' => $item->name,
+                'Proyecto'            => $item->project ? $item->project->name : 'No asignada',
+                'Propietario'         => $item->owner ? $item->owner->fullname : 'No asignado',
+                // 'Descripción'         => $item->description,
+                'Precio'              => '$'.$item->price,
+                'Enganche'            => '$'.($item->pay_in_advance ?? 0),
+                'Fecha de creación'   => strftime('%d', strtotime($item->created_at)).' de '.strftime('%B', strtotime($item->created_at)). ' del '.strftime('%Y', strtotime($item->created_at)). ' a las '.strftime('%H:%M', strtotime($item->created_at)). ' hrs.',
+            ];
+        }
+
+        // More than 1 row
+        if ( count($rows) ) {
+            $titulos = array_keys($rows[0]);
+        }
+        return Excel::download(new PropertiesExport($rows, $titulos), 'Listado de propiedades '.date('d-m-Y').'.xlsx');
     }
 }

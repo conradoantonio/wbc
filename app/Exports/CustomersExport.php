@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Evento;
+use App\Models\User;
 
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class BannerExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyles
+class CustomersExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyles
 {
     /**
     * Items that has event data
@@ -71,7 +71,7 @@ class BannerExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyle
             // 'B2' => ['font' => ['italic' => true]],
 
             // Styling an entire column.
-            'A:H'  => [
+            'A:L'  => [
                 'alignment' => [
                     'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER
                 ]
@@ -79,3 +79,4 @@ class BannerExport implements FromArray, WithHeadings, ShouldAutoSize, WithStyle
         ];
     }
 }
+

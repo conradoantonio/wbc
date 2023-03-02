@@ -9,6 +9,9 @@
     .datepicker {
       z-index: 1600 !important; /* has to be larger than 1050 */
     }
+    td.disabled {
+        color: red!important;
+    }
 </style>
 <section class="admin-content">
     <div class=" bg-dark m-b-30 bg-stars">
@@ -36,7 +39,7 @@
                         <h2 class="">Lista de propiedades</h2>
                         <div class="card-controls">
                             <a href="javascript:;" class="btn btn-dark filter-rows"> <i class="mdi mdi-filter-variant"></i> Filtrar</a>
-                            {{-- <a href="javascript:;" class="btn btn-info export-rows"> <i class="mdi mdi-file-excel"></i> Exportar</a> --}}
+                            <a href="javascript:;" class="btn btn-info export-rows"> <i class="mdi mdi-file-excel"></i> Exportar</a>
                             <a href="{{url('propiedades/form')}}"><button class="btn btn-success" type="button"> <i class="mdi mdi-open-in-new"></i> Nuevo registro</button></a>
                         </div>
                         <div class="row m-b-20">
@@ -99,7 +102,126 @@
         ajaxSimple(config);
     });
 
+    // Change pay day
+    $('body').delegate('.change-pay-day', 'click', function() {
+        var id = $(this).parent().siblings("td:nth-child(1)").text();
+
+        config = {
+            'id'        : id,
+            'keepModal' : true,
+            'route'     : baseUrl.concat('/propiedades/state-account'),
+            'method'    : 'POST',
+            'callback'  : 'showModalChangePayDay',
+        }
+
+        loadingMessage('Espere un momento...');
+
+        ajaxSimple(config);
+    });
+
+    // Listener que recalcula los pagos pendientes cada que se selecciona una nueva fecha
+    $('body').delegate('.new-date','change', function() {
+        let initDate = $(this).val();
+        let count = 0;
+        if (! initDate ) {
+            console.log('Fecha inválida');
+            return;
+        }
+        let table = $('table.new-date-installments tbody tr');
+        let price = Number( parseFloat( $('[name="price"]').val() ).toFixed(2) );
+        let initDateMoment = moment( initDate ).locale("es");
+        // console.log('Fecha a partir de:', initDateMoment.format('YYYY-MM-DD'));
+
+        table.each(function( index ) {
+            let newDate = null;
+            if ( count == 0 ) { newDate = initDateMoment; }
+            else { newDate = initDateMoment.add(1, 'month'); }
+            $(this).children().siblings("td:nth-child(4)").text( newDate.format('DD [de] MMMM [del] YYYY') );// Se cambia la fecha, esto es solo ilustrativo
+            $(this).children().siblings("td:nth-child(4)").data( 'date', newDate.format('YYYY-MM-DD' ) );// Se cambia la fecha, esto es solo ilustrativo
+            count++;
+        });
+    });
+
     //Display charges and payments for a contract
+    function showModalChangePayDay(response, config) {
+        $( ".new-date" ).datepicker( "destroy" ); //Destruye las propiedades del datepicker
+        $("table.new-date-installments tbody").children().remove();
+        $('[name="row_id"]').val(response.id);
+        $('[name="property_name"]').val(response.name);
+        let count = 0;
+        let startDate = null;
+        charges = response.installments;
+        
+        if ( charges.length > 0 ) {
+            for ( var key_2 in charges ) {
+                if ( charges.hasOwnProperty(key_2) ) {
+                    let chargeRow = charges[key_2];
+                    if ( chargeRow.status.id != 1 ) {
+                        let paymentDate = moment(chargeRow.date);
+                        let dateFormate = paymentDate.format('DD [de] MMMM [del] YYYY');
+                        let amount      = Number(chargeRow.amount);
+                        let amountPaid  = Number(chargeRow.amount_paid);
+                        let statusHTML  = '<span class="badge badge-'+(chargeRow.status.class)+'">'+chargeRow.status.name+'</span>';
+                        if ( count == 0 ) { startDate = paymentDate.format('YYYY-MM-DD'); }
+                        count++;
+                        $("table.new-date-installments tbody").append(
+                            '<tr id="id_detail'+chargeRow.id+'">'+
+                                '<td>'+(count)+'</td>'+
+                                '<td>$'+(parseFloat(amount - amountPaid).toFixed(2))+'</td>'+
+                                '<td>'+(statusHTML)+'</td>'+
+                                '<td>'+(dateFormate)+'</td>'+
+                            '</tr>'
+                        );
+                    }
+                }
+            }
+        } else {
+            $("table.new-date-installments tbody").append(
+                '<tr>'+
+                    '<td class="text-center" color="red" colspan="4">No se han registrado cargos.</td>'+
+                '</tr>'
+            ); 
+        }
+
+        // Se setea el rango mínimo de pago
+        $( ".new-date" ).datepicker({
+            startDate: startDate,
+            autoclose: true,
+            todayHighlight: true,
+            format: "yyyy-mm-dd",
+        });
+
+        $('#change-pay-day').modal('show');
+    }
+
+    // Send custom ajax request for change pay dates for installments
+    function changePayDay() {
+        let id          = $('#change-pay-day [name="row_id"]').val();// Property id
+        let new_date    = Number( $('#change-pay-day [name="new_date"]').val() ).toFixed(0);
+        let route       = baseUrl.concat('/pagos/change-pay-day');
+        // let table       = $('table.new-date-installments tbody tr');
+        // table.each(function( index ) {
+        //     let date =  $(this).children().siblings("td:nth-child(4)").data( 'date' );// Se cambia la fecha, esto es solo ilustrativo
+        //     console.log(date);
+        // });
+        if (! new_date || new_date <= 0 || new_date >= 28 ) {
+            infoMsg('warning', 'Día de pago inválido.', 'Asigne un día de pago entre 0 y 28 de cada mes');
+            return;
+        }
+        let config = {
+            'id'          : id,
+            'method'      : 'POST',
+            'new_date'    : new_date,
+            'route'       : route,
+            'refresh'     : 'table',
+        }
+        console.log(config);
+        return;
+        loadingMessage();
+        ajaxSimple(config);
+    }
+
+    // Display charges and payments for a contract
     function displayChargesPayments(response, config) {
         $("table.payments tbody").children().remove();
         $("table.charges tbody").children().remove();

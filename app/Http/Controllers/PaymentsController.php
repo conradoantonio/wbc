@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Excel;
+
 use \App\Models\User;
 use \App\Models\Project;
 use \App\Models\Payment;
@@ -9,6 +11,8 @@ use \App\Models\Property;
 use \App\Models\Installment;
 use \App\Models\Notification;
 use \App\Models\PaymentStatus;
+
+use \App\Exports\CustomersExport;
 
 use Illuminate\Http\Request;
 
@@ -72,6 +76,38 @@ class PaymentsController extends Controller
         if (! $user ) { return response(['msg' => 'Seleccione un cliente para asignar el plan de pagos', 'status' => 'error'], 404); }
         if (! count($req->installmentsArray) ) { return response(['msg' => 'Plan de pagos inválido', 'status' => 'error'], 404); }
         if ( $property->owner ) { return response(['msg' => 'Esta propiedad ya cuenta con un cliente asignado', 'status' => 'error'], 404); }
+        if ( count($property->installments) ) { return response(['msg' => 'Esta propiedad ya cuenta con un plan de pagos mensuales asignados', 'status' => 'error'], 404); }
+
+        foreach( $req->installmentsArray as $installmentData ) {
+            $installment = New Installment;
+
+            $installment->user_id = $user->id;
+            $installment->property_id = $property->id;
+            $installment->installment_status_id = 2;
+            $installment->amount = $installmentData['amount'];
+            $installment->date = $installmentData['date'];
+
+            $installment->save();
+        }
+
+        $property->user_id = $user->id;
+        $property->pay_in_advance = $req->pay_in_advance;
+
+        $property->save();
+
+        return response(['msg' => 'Plan de pagos generados exitósamente', 'status' => 'success', 'url' => url('propiedades'), 'data' => $property->load(['installments'])], 200);
+    }
+
+    /**
+     * Generate the installment for a property and a user
+     *
+     */
+    public function updatePaymentDay(Request $req)
+    {
+        $property = Property::find($req->id);
+
+        if (! $property ) { return response(['msg' => 'Propiedad inválida', 'status' => 'error'], 404); }
+        if (! count($req->installmentsArray) ) { return response(['msg' => 'Nuevo plan de pagos', 'status' => 'error'], 404); }
         if ( count($property->installments) ) { return response(['msg' => 'Esta propiedad ya cuenta con un plan de pagos mensuales asignados', 'status' => 'error'], 404); }
 
         foreach( $req->installmentsArray as $installmentData ) {
@@ -170,5 +206,37 @@ class PaymentsController extends Controller
         }
         $this->saveNotification($user, $msg, $content);
         return response(['msg' => 'Pago validado exitósamente', 'url' => url('pagos'), 'status' => 'success' ], 200);
+    }
+
+    /**
+     * Export the orders to excel according to the filters.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function export( Request $req )
+    {
+        $extraFilters = [ 'user' => auth()->user() ];
+        $req->request->add( $extraFilters );
+        
+        $items = Payment::filter( $req->all() )->orderBy('id', 'desc')->get();
+        $rows = $titulos = array();
+
+        foreach ( $items as $item ) {
+            $rows [] = [
+                'ID pago'                  => $item->id,
+                'Monto'                    => '$'.$item->amount,
+                'Pagado por'               => $item->owner ? $item->owner->fullname : 'N/A',
+                'Pago para propiedad'      => $item->property ? $item->property->name : 'N/A',
+                'Tipo de pago'             => $item->type ? $item->type->name : 'N/A',
+                'Status'                   => $item->status ? $item->status->name : 'N/A',
+                'Fecha de pago'            => strftime('%d', strtotime($item->created_at)).' de '.strftime('%B', strtotime($item->created_at)). ' del '.strftime('%Y', strtotime($item->created_at)). ' a las '.strftime('%H:%M', strtotime($item->created_at)). ' hrs.',
+            ];
+        }
+
+        // More than 1 row
+        if ( count($rows) ) {
+            $titulos = array_keys($rows[0]);
+        }
+        return Excel::download(new CustomersExport($rows, $titulos), 'Listado de pagos '.date('d-m-Y').'.xlsx');
     }
 }

@@ -36,7 +36,7 @@
                         <h2 class="">Lista de pagos</h2>
                         <div class="card-controls">
                             <a href="javascript:;" class="btn btn-dark filter-rows"> <i class="mdi mdi-filter-variant"></i> Filtrar</a>
-                            {{-- <a href="javascript:;" class="btn btn-info export-rows"> <i class="mdi mdi-file-excel"></i> Exportar</a> --}}
+                            <a href="javascript:;" class="btn btn-info export-rows"> <i class="mdi mdi-file-excel"></i> Exportar</a>
                         </div>
                         <div class="row m-b-20">
                             <div class="col-md-3 my-auto">

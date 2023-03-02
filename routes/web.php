@@ -89,6 +89,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/',[PropertiesController::class, 'index'])->name('property.index');
         Route::get('form/{id?}',[PropertiesController::class, 'form'])->name('property.form');
         Route::get('crear-plan-de-pagos/{id}',[PaymentsController::class, 'formCreateInstallmentsPlan'])->name('property.formCreateInstallmentsPlan');
+        Route::get('excel/export',[PropertiesController::class, 'export'])->name('property.export');
+        Route::post('change-pay-day',[PaymentsController::class, 'updatePaymentDay'])->name('property.updatePaymentDay');
         Route::post('create-installment-plan',[PaymentsController::class, 'createInstallmentsPlan'])->name('property.createInstallmentsPlan');
         Route::post('filter',[PropertiesController::class, 'filter'])->name('property.filter');
         Route::post('state-account',[PropertiesController::class, 'stateAccount'])->name('property.stateAccount');
@@ -105,6 +107,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/',[PaymentsController::class, 'index'])->name('payment.index');
         Route::get('form/{id?}',[PaymentsController::class, 'form'])->name('payment.form');
         Route::get('show/{id?}',[PaymentsController::class, 'show'])->name('payment.show');
+        Route::get('excel/export',[PaymentsController::class, 'export'])->name('payment.export');
         Route::post('filter',[PaymentsController::class, 'filter'])->name('payment.filter');
         Route::post('save',[PaymentsController::class, 'save'])->name('payment.save');
         Route::post('update',[PaymentsController::class, 'update'])->name('payment.update');
@@ -156,6 +159,8 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('clientes')->group(function () {
             Route::get('/',[CustomersController::class, 'index'])->name('customer.index');
             Route::get('form/{id?}',[CustomersController::class, 'form'])->name('customer.form');
+            Route::get('excel/export',[CustomersController::class, 'export'])->name('customer.export');
+            Route::post('filter',[CustomersController::class, 'filter'])->name('customer.filter');
             Route::post('save',[CustomersController::class, 'save'])->name('customer.save');
             Route::post('update',[CustomersController::class, 'update'])->name('customer.update');
             Route::post('delete',[CustomersController::class, 'delete'])->name('customer.delete');

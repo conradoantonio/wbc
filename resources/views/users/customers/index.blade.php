@@ -29,7 +29,7 @@
                         <div class="card-controls">
                             <a href="{{url('usuarios/clientes/form')}}"><button class="btn btn-success" type="button"> <i class="mdi mdi-open-in-new"></i> Nuevo registro</button></a>
                             <a href="javascript:;" class="btn btn-dark filter-rows"> <i class="mdi mdi-filter-variant"></i> Filtrar</a>
-                            {{-- <a href="javascript:;" class="btn btn-info export-rows"> <i class="mdi mdi-file-excel"></i> Exportar</a> --}}
+                            <a href="javascript:;" class="btn btn-info export-rows"> <i class="mdi mdi-file-excel"></i> Exportar</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -39,13 +39,6 @@
                             </div>
                             <div class="col-md-9 text-right my-auto filter-section">
                                 <div class="btn-group row" role="group" aria-label="Basic example">
-                                    <div class="no-pad col-md-4">
-                                        <select class="form-control" name="verificado">
-                                            <option value="">Status (Cualquiera)</option>
-                                            <option value="0">Inhabilitado</option>
-                                            <option value="1">Deshabilitado</option>
-                                        </select>
-                                    </div>
                                     <div class="no-pad col-md-4">
                                         <input type="text" class="date-picker form-control" name="fecha_inicio" autocomplete="off" placeholder="Fecha registro inicio">
                                     </div>

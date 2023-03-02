@@ -108,3 +108,76 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div class="modal fade data-fill" tabindex="-1" role="dialog" aria-labelledby="label-title" id="change-pay-day">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="label-title">Cambiar día de pago</h4>
+            </div>
+            <form id="form-data" action="{{url('payments/change-pay-day')}}" method="POST" class="" onsubmit="return false;" enctype="multipart/form-data" autocomplete="off" data-ajax-type="ajax-rate-users" data-column="0" data-refresh=table data-table_id="data-table">
+                <div class="modal-body">
+                    <div class="form-group col-md-12 d-none">
+                        <input type="text" class="form-control" name="row_id">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label" for="type">Propiedad</label>
+                        <input type="text" class="form-control" disabled name="property_name" data-msg="Propiedad">
+                    </div>
+                    {{-- <div class="form-group col-md-12">
+                        <label class="control-label" for="type">Nuevo día de pago (Del 1 al 28)</label>
+                        <input type="text" class="form-control" name="new_date" data-msg="Nuevo día de pago (Del 1 al 28)">
+                    </div> --}}
+                    <div class="form-group col-md-12">
+                        <label class="control-label" for="type">Nueva fecha de pago a partir de:</label>
+                        <input type="text" class="form-control new-date" name="new_date" data-msg="Nuevo día de pago (Del 1 al 28)">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="alert alert-border-info  alert-dismissible fade show" role="alert">
+                            <div class="d-flex">
+                                <div class="icon">
+                                    <i class="icon mdi mdi-alert-circle-outline"></i>
+                                </div>
+                                <div class="content">
+                                    <strong>Nota:</strong> <br>
+                                    - Sólo puede seleccionar fechas mayor al del próximo pago actual. <br>
+                                    - Seleccionar un día entre el 1 y 28 de cada mes.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <div class="text-left payments-content">
+                            <div class="col-md-12">
+                                <ul class="list-group">
+                                    <li class="list-group-item active">Cargos a modificar</li>
+                                    <li class="list-group-item">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-sm new-date-installments">
+                                                <thead>
+                                                    <th class="align-middle">No.</th>
+                                                    <th class="align-middle">Monto a pagar</th>
+                                                    <th class="align-middle">Status</th>
+                                                    <th class="align-middle">Fecha límite para pagar</th>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success change-pay-day-btn save" data-custom-function="changePayDay">Procesar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

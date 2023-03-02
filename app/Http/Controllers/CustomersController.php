@@ -8,6 +8,8 @@ use \App\Models\User;
 use \App\Models\Project;
 use \App\Models\Property;
 
+use \App\Exports\CustomersExport;
+
 use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
@@ -41,7 +43,7 @@ class CustomersController extends Controller
     {
         $req->request->add([ 'user' => auth()->user(), 'roles' => [2] ]);
 
-        $items = User::filter( $req->all() )->withTrashed()->with(['documentacion'])->get();
+        $items = User::filter( $req->all() )->withTrashed()->get();
 
         return view('users.customers.table', compact(['items']));
     }
@@ -237,22 +239,24 @@ class CustomersController extends Controller
     public function export( Request $req )
     {
         $req->request->add([ 'user' => auth()->user(), 'roles' => [2] ]);
-        $items = User::filter( $req->all() )->withTrashed()->get();
+        $items = User::filter( $req->all() )->where('role_id', 2)->get();
         $rows = $titulos = array();
 
         foreach ( $items as $item ) {
             $rows [] = [
-                'ID usuario'          => $item->id,
-                'Nombre completo'     => $item->fullname,
-                'Email'               => $item->email,
-                'Teléfono'            => $item->telefono,
-                'Sexo'                => $item->sexo,
-                'País'                => $item->pais,
-                'Fecha de nacimiento' => strftime('%d', strtotime($item->fecha_nacimiento)).' de '.strftime('%B', strtotime($item->fecha_nacimiento)). ' del '.strftime('%Y', strtotime($item->fecha_nacimiento)),
-                'Verificado'          => $item->verificado == 1 ? 'Si' : 'No',
-                '¿Recibir correos?'   => $item->recibir_correos == 1 ? 'Si' : 'No',
-                'Status'              => $item->deleted_at ? 'Baneado' : 'Activo',
-                'Fecha de registro'   => strftime('%d', strtotime($item->created_at)).' de '.strftime('%B', strtotime($item->created_at)). ' del '.strftime('%Y', strtotime($item->created_at)). ' a las '.strftime('%H:%M', strtotime($item->created_at)). ' hrs.',
+                'ID usuario'               => $item->id,
+                'Nombre completo'          => $item->fullname,
+                'Email'                    => $item->email,
+                'Teléfono'                 => $item->phone ?? 'N/A',
+                'Sexo'                     => $item->genre ?? 'N/A',
+                'País'                     => $item->country ?? 'N/A',
+                'Num. de propiedades'      => $item->properties->count(),
+                'Fecha de nacimiento'      => $item->date_of_birth ? strftime('%d', strtotime($item->date_of_birth)).' de '.strftime('%B', strtotime($item->date_of_birth)). ' del '.strftime('%Y', strtotime($item->date_of_birth)) : 'N/A',
+                'SPEI'                     => 'Clabe: '.$item->clabe,
+                '¿Recibir correos?'        => $item->receive_emails == 1 ? 'Si' : 'No',
+                '¿Recibir notificaciones?' => $item->receive_notifications == 1 ? 'Si' : 'No',
+                // 'Status'                   => $item->deleted_at ? 'Baneado' : 'Activo',
+                'Fecha de registro'        => strftime('%d', strtotime($item->created_at)).' de '.strftime('%B', strtotime($item->created_at)). ' del '.strftime('%Y', strtotime($item->created_at)). ' a las '.strftime('%H:%M', strtotime($item->created_at)). ' hrs.',
             ];
         }
 
@@ -260,6 +264,6 @@ class CustomersController extends Controller
         if ( count($rows) ) {
             $titulos = array_keys($rows[0]);
         }
-        return Excel::download(new ClienteExport($rows, $titulos), 'Listado de usuarios '.date('d-m-Y').'.xlsx');
+        return Excel::download(new CustomersExport($rows, $titulos), 'Listado de clientes '.date('d-m-Y').'.xlsx');
     }
 }
