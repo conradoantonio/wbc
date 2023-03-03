@@ -142,7 +142,7 @@
                                 <div class="content">
                                     <strong>Nota:</strong> <br>
                                     - Sólo puede seleccionar fechas mayor al del próximo pago actual. <br>
-                                    - Seleccionar un día entre el 1 y 28 de cada mes.
+                                    {{-- - Seleccionar un día entre el 1 y 28 de cada mes. --}}
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">×</span>
                                     </button>

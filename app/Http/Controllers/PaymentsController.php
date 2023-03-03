@@ -106,28 +106,20 @@ class PaymentsController extends Controller
     {
         $property = Property::find($req->id);
 
-        if (! $property ) { return response(['msg' => 'Propiedad inválida', 'status' => 'error'], 404); }
-        if (! count($req->installmentsArray) ) { return response(['msg' => 'Nuevo plan de pagos', 'status' => 'error'], 404); }
-        if ( count($property->installments) ) { return response(['msg' => 'Esta propiedad ya cuenta con un plan de pagos mensuales asignados', 'status' => 'error'], 404); }
+        if (! $property ) { return response(['msg' => 'Propiedad inválida o no encontrada', 'status' => 'error'], 404); }
+        if (! count($req->new_dates) ) { return response(['msg' => 'Proporcione un listado de pagos válidos para continuar', 'status' => 'error'], 400); }
+        if (! count($property->installments) ) { return response(['msg' => 'Esta propiedad no cuenta con un plan de pagos por modificar', 'status' => 'error'], 400); }
 
-        foreach( $req->installmentsArray as $installmentData ) {
-            $installment = New Installment;
+        foreach( $req->new_dates as $installmentData ) {
+            $installment = Installment::where('property_id', $property->id)->where('id', $installmentData['id'])->first();
 
-            $installment->user_id = $user->id;
-            $installment->property_id = $property->id;
             $installment->installment_status_id = 2;
-            $installment->amount = $installmentData['amount'];
             $installment->date = $installmentData['date'];
 
             $installment->save();
         }
 
-        $property->user_id = $user->id;
-        $property->pay_in_advance = $req->pay_in_advance;
-
-        $property->save();
-
-        return response(['msg' => 'Plan de pagos generados exitósamente', 'status' => 'success', 'url' => url('propiedades'), 'data' => $property->load(['installments'])], 200);
+        return response(['msg' => 'Plan de pagos actualizados exitósamente', 'status' => 'success', 'url' => url('propiedades'), 'data' => $property->load(['installments'])], 200);
     }
 
     /**

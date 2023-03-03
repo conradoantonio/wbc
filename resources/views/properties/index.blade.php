@@ -165,7 +165,7 @@
                         if ( count == 0 ) { startDate = paymentDate.format('YYYY-MM-DD'); }
                         count++;
                         $("table.new-date-installments tbody").append(
-                            '<tr id="id_detail'+chargeRow.id+'">'+
+                            '<tr class="installment" data-id="'+chargeRow.id+'" id="id_detail'+chargeRow.id+'">'+
                                 '<td>'+(count)+'</td>'+
                                 '<td>$'+(parseFloat(amount - amountPaid).toFixed(2))+'</td>'+
                                 '<td>'+(statusHTML)+'</td>'+
@@ -197,26 +197,41 @@
     // Send custom ajax request for change pay dates for installments
     function changePayDay() {
         let id          = $('#change-pay-day [name="row_id"]').val();// Property id
-        let new_date    = Number( $('#change-pay-day [name="new_date"]').val() ).toFixed(0);
+        let new_date    = $('#change-pay-day [name="new_date"]').val();
         let route       = baseUrl.concat('/pagos/change-pay-day');
-        // let table       = $('table.new-date-installments tbody tr');
-        // table.each(function( index ) {
-        //     let date =  $(this).children().siblings("td:nth-child(4)").data( 'date' );// Se cambia la fecha, esto es solo ilustrativo
-        //     console.log(date);
-        // });
-        if (! new_date || new_date <= 0 || new_date >= 28 ) {
-            infoMsg('warning', 'Día de pago inválido.', 'Asigne un día de pago entre 0 y 28 de cada mes');
+        let newDates    = [];
+
+        $('table.new-date-installments tbody').children('tr.installment').each(function( index ) {
+            let id = $(this).data('id');
+            console.log(id);
+            // let id = $(this).children().siblings("td:nth-child(1)").text();
+            let date = $(this).children().siblings("td:nth-child(4)").data( 'date' );
+            // let amount = Number( $(this).children().siblings("td:nth-child(3)").text() );
+            let installmentObj = {
+                id     : id,
+                date   : date,
+            };
+            newDates.push(installmentObj);
+            // console.log('installmentObj', installmentObj);
+        });
+        if ( ! new_date || new_date <= 0 || new_date >= 28 ) {
+            infoMsg('warning', 'Día de pago inválido.', 'Asigne un día de pago entre 1 y 28 de cada mes');
+            return;
+        }
+
+        if ( ! newDates.length ) {
+            infoMsg('warning', 'Error', 'Debe tener al menos una fecha por modificar');
             return;
         }
         let config = {
             'id'          : id,
             'method'      : 'POST',
             'new_date'    : new_date,
+            'new_dates'   : newDates,
             'route'       : route,
             'refresh'     : 'table',
         }
-        console.log(config);
-        return;
+
         loadingMessage();
         ajaxSimple(config);
     }
