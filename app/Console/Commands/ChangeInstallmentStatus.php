@@ -43,6 +43,7 @@ class ChangeInstallmentStatus extends Command
      */
     public function handle()
     {
+        set_time_limit(0);
         $today = Carbon::now();
         $yesterday = Carbon::now()->subDays(1);
         $installments = Installment::where('date', $yesterday->toDateString())

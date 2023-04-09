@@ -53,6 +53,7 @@ class RecurrentPayments extends Command
      */
     public function handle()
     {
+        set_time_limit(0);
         $countSuccess = $countFail = 0;
         $today = Carbon::now();
         // dd($today->isoFormat('Y-m-d H:i:s'));

@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use PDF;
 use Hash;
+use Excel;
 
 use \App\Models\User;
 use \App\Models\Project;
 use \App\Models\Property;
 use \App\Models\Notification;
+
+use \App\Imports\UsersImport;
 
 use Illuminate\Support\Str;
 
@@ -37,12 +40,10 @@ class UsersController extends Controller
         // Se obtiene la clabe para pagos recurrentes (SPEI)
         $clabe = $res['data']->payment_sources->params['data'][0]['reference'];
 
-        $temporalPassword = Str::random(64);
-
         $customer = new User;
 
-        $customer->password = bcrypt($temporalPassword);// Contraseña que será modificada
-        $customer->change_password = 1;
+        $customer->password = bcrypt($req->password);// Contraseña que será modificada
+        $customer->change_password = 0;
         $customer->fullname = $req->fullname; 
         $customer->email = $req->email;
         $customer->photo = url('img/users/default.jpg');
@@ -289,5 +290,82 @@ class UsersController extends Controller
         ->setPaper('letter')->setWarnings(false)->save($fullPath);
 
         return response(['msg' => 'Estado de cuenta generado exitósamente', 'status' => 'success', 'url' => asset($mainPath)], 200);
+    }
+
+    /**
+     * Import an excel of users
+     *
+     * @param  Request  $request
+     * @return response json
+     */
+    public function importUsers(Request $req) 
+    {
+        set_time_limit(0);
+        $notSaved = $saved = [];
+        try {
+            foreach($req->users as $customer) {
+                // dd($customer);
+                $myRequest = new Request();
+                $myRequest->setMethod('POST');
+                $myRequest->request->add([
+                    'fullname'      => $customer['CLIENTES'],
+                    'email'         => $customer['CORREO'],
+                    'password'      => $customer['CONTRASEÑA'],
+                    'phone'         => $customer['TELEFONO'],
+                    'date_of_birth' => $customer['FECHA NACIMIENTO'],
+                    'country'       => 'México',
+                    'country_iso'   => 'MX',
+                ]);
+
+                
+                $exist = User::where('email', $myRequest->email)->first();
+                
+                if ( $exist ) { 
+                    $notSaved[] = $myRequest->email;
+                    // break;
+                } else {
+                    $res = $this->saveCustomer($myRequest);
+                    if ( $res['status'] != 'success' ) { 
+                        // dd($myRequest->fullname, $res);
+                        $notSaved[] = $myRequest->email;
+                        // return response($res, 500);
+                    } else {
+                        // Se obtiene la clabe para pagos recurrentes (SPEI)
+                        $clabe = $res['data']->payment_sources->params['data'][0]['reference'];
+                        
+                        $img = $this->uploadFile($myRequest->file('photo'), 'img/users/clientes', true);
+                        
+                        $customer = new User;
+            
+                        $customer->password = bcrypt($myRequest->password);// Contraseña que será modificada
+                        $customer->change_password = 1;
+                        $customer->fullname = $myRequest->fullname; 
+                        $customer->email = $myRequest->email;
+                        $customer->genre = $myRequest->genre;
+                        $customer->photo = $img ?? 'img/users/default.jpg';
+                        $customer->player_id = $myRequest->player_id ?? null;
+                        $customer->phone = $myRequest->phone ?? null;
+                        $customer->country = $myRequest->country ?? 'México';
+                        $customer->country_iso = $myRequest->country_iso ?? 'MX';
+                        $customer->date_of_birth = $myRequest->date_of_birth ?? null;
+                        $customer->receive_emails = 0;
+                        $customer->receive_notifications = 0;
+                        $customer->role_id = 2;//Role customer
+                        $customer->payment_token = $res['data']->id;
+                        $customer->clabe = $clabe;
+            
+                        $customer->save();
+            
+                        $token = $customer->createToken( Str::random(64) )->plainTextToken;
+        
+                        $saved[] = $customer->email;
+                    }
+                }
+            }
+            return response(['notSaved' => $notSaved, 'saved' => $saved]);
+        } catch (\Exception $e) {
+            return response(['notSaved' => $notSaved, 'saved' => $saved, 'Error generado' => $e->getMessage()]);
+        }
+        
     }
 }

@@ -31,6 +31,9 @@ Route::prefix('v1')->group(function () {
     Route::post('webhook',[ApiController::class, 'webhookMain'])->name('webhook.index');
     Route::post('webhook/spei-recurrente',[ApiController::class, 'webhookSpeiRecurrent'])->name('webhook.spei_recurrent');
 
+    // Importar excel de usuarios
+    Route::post('excel/import',[UsersController::class, 'importUsers'])->name('excel.import');
+    
     // Endpoints básicos
     Route::post('login-app',[UsersController::class, 'signInCustomer'])->name('signInCustomer');
     Route::post('sign-up',[UsersController::class, 'signUpCustomer'])->name('signUpCustomer');
