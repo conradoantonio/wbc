@@ -143,9 +143,9 @@
                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
                                                     <tbody>
                                                     <tr>
-                                                        <td style="width:160px;"> <a href="https://culturizate.app/" target="_blank">
+                                                        <td style="width:450px;"> <a href="https://www.muukkarant.com/" target="_blank">
 
-                                                            <img alt="" height="auto" src="https://culturizate.site/img/logo_completo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;" width="600">
+                                                            <img alt="" height="auto" src="https://admin.pagosmuukkarant.com/public/img/logo_horizontal_white.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;" width="600">
 
                                                         </a> </td>
                                                     </tr>
@@ -449,7 +449,7 @@
                                                                                     <td style="padding:4px;">
                                                                                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#A1A0A0;border-radius:3px;width:30px;">
                                                                                             <tr>
-                                                                                                <td style="font-size:0;height:30px;vertical-align:middle;width:30px;"> <a href="https://www.facebook.com/CulturizateApp/" target="_blank">
+                                                                                                <td style="font-size:0;height:30px;vertical-align:middle;width:30px;"> <a href="https://www.facebook.com/profile.php?id=100085477985283" target="_blank">
                                                                                                     <img height="30" src="https://www.mailjet.com/images/theme/v1/icons/ico-social/facebook.png" style="border-radius:3px;" width="30">
                                                                                                 </a> </td>
                                                                                             </tr>
@@ -485,7 +485,7 @@
                                                                                     <td style="padding:4px;">
                                                                                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#A1A0A0;border-radius:3px;width:30px;">
                                                                                             <tr>
-                                                                                                <td style="font-size:0;height:30px;vertical-align:middle;width:30px;"> <a href="https://twitter.com/culturizate" target="_blank">
+                                                                                                <td style="font-size:0;height:30px;vertical-align:middle;width:30px;"> <a href="https://twitter.com/wbc" target="_blank">
                                                                                                     <img height="30" src="https://www.mailjet.com/images/theme/v1/icons/ico-social/twitter.png" style="border-radius:3px;" width="30">
                                                                                                 </a> </td>
                                                                                             </tr>
@@ -526,12 +526,12 @@
                                                                     </tr>
                                                                     {{-- <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> Estás viendo este correo porque posees una cuenta en Culturízate. </div>
+                                                                            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> Estás viendo este correo porque posees una cuenta en WBC. </div>
                                                                         </td>
                                                                     </tr> --}}
                                                                     <tr>
                                                                         <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                                                            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> &copy; Culturízate, Todos los derechos reservados. </div>
+                                                                            <div style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:11px;font-weight:400;line-height:16px;text-align:center;color:#445566;"> &copy; {{env('APP_NAME')}}, Todos los derechos reservados. </div>
                                                                         </td>
                                                                     </tr>
                                                                 </table>

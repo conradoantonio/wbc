@@ -76,7 +76,7 @@
                                     <ul class="list-group">
                                         {{-- <li class="list-group-item active">Historial de cargos</li> --}}
                                         <li class="list-group-item">
-                                            <form id="form-data-sendmail" class="valid ajax-plus" action="{{url('propiedades/state-account')}}" onsubmit="return false;" enctype="multipart/form-data" method="POST" autocomplete="off" data-ajax-type="ajax-form-modal" data-keep_modal="true" data-column="0" data-refresh="" data-redirect="0" data-table_id="" data-container_id="">
+                                            <form id="form-data-sendmail" class="valid ajax-plus" action="{{url('propiedades/state-account/send')}}" onsubmit="return false;" enctype="multipart/form-data" method="POST" autocomplete="off" data-ajax-type="ajax-form-modal" data-keep_modal="true" data-column="0" data-refresh="" data-redirect="0" data-table_id="" data-container_id="">
                                                 <div class="row">
                                                     <div class="form-group col-sm-12 col-xs-12 d-none">
                                                         <label class="required" for="id">ID</label>

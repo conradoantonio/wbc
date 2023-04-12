@@ -60,6 +60,19 @@
     </div>
     <div class="admin-sidebar-wrapper js-scrollbar">
         <ul class="menu">
+            @if( in_array(auth()->user()->role->name, ['Administrador', 'App', 'Alterno']) )
+            <li class="menu-item {{ in_array($menu, ['Mi perfil']) ? 'active opened' : ''}}">
+                <a href="{{url('mi-perfil')}}" class="menu-link">
+                    <span class="menu-label">
+                        <span class="menu-name">Mi perfil</span>
+                    </span>
+                    <span class="menu-icon">
+                        <i class="icon-placeholder mdi mdi-account"></i>
+                    </span>
+                </a>
+            </li>
+            @endif
+
             @if( in_array(auth()->user()->role->name, ['Administrador']) )
             <li class="menu-item {{ in_array($menu, ['Inicio']) ? 'active opened' : ''}}">
                 <a href="{{url('dashboard')}}" class="menu-link">
@@ -70,6 +83,27 @@
                         <i class="icon-placeholder mdi mdi-view-dashboard-outline"></i>
                     </span>
                 </a>
+            </li>
+            @endif
+
+            @if( in_array(auth()->user()->role->name, ['Administrador']) )
+            <li class="menu-item {{ in_array($menu, ['Usuarios']) ? 'active opened' : ''}}">
+                <a href="#" class="open-dropdown menu-link">
+                    <span class="menu-label">
+                        <span class="menu-name">Usuarios<span class="menu-arrow"></span></span>
+                    </span>
+                    <span class="menu-icon"><i class="icon-placeholder mdi mdi-account-group"></i></span>
+                </a>
+                <!--submenu-->
+                <ul class="sub-menu" style="{{ $menu == 'Usuarios' ? 'display: block' : 'display: none'}};">
+                    <li class="menu-item">
+                        @if( in_array(auth()->user()->role->name, ['Administrador']) )
+                        <a href="{{url('usuarios/clientes')}}" class="menu-link">
+                            <span class="menu-label"><span class="menu-name {{ ( in_array($menu, ['Usuarios']) && in_array($title, ['Clientes', 'Formulario de cliente']) ) ? 'sub-ative' :'' }}">Clientes</span></span>
+                        </a>
+                        @endif
+                    </li>
+                </ul>
             </li>
             @endif
 
@@ -100,19 +134,6 @@
             @endif
 
             @if( in_array(auth()->user()->role->name, ['Administrador']) )
-            <li class="menu-item {{ in_array($menu, ['Blogs']) ? 'active opened' : ''}}">
-                <a href="{{url('blogs')}}" class="menu-link">
-                    <span class="menu-label">
-                        <span class="menu-name">Blogs</span>
-                    </span>
-                    <span class="menu-icon">
-                        <i class="mdi mdi-blogger"></i>
-                    </span>
-                </a>
-            </li>
-            @endif
-
-            @if( in_array(auth()->user()->role->name, ['Administrador']) )
             <li class="menu-item {{ in_array($menu, ['Pagos']) ? 'active opened' : ''}}">
                 <a href="{{url('pagos')}}" class="menu-link">
                     <span class="menu-label">
@@ -120,6 +141,19 @@
                     </span>
                     <span class="menu-icon">
                         <i class="mdi mdi-finance"></i>
+                    </span>
+                </a>
+            </li>
+            @endif
+
+            @if( in_array(auth()->user()->role->name, ['Administrador']) )
+            <li class="menu-item {{ in_array($menu, ['Blogs']) ? 'active opened' : ''}}">
+                <a href="{{url('blogs')}}" class="menu-link">
+                    <span class="menu-label">
+                        <span class="menu-name">Blogs</span>
+                    </span>
+                    <span class="menu-icon">
+                        <i class="mdi mdi-blogger"></i>
                     </span>
                 </a>
             </li>
@@ -148,53 +182,6 @@
                         <i class="icon-placeholder mdi mdi-trophy"></i>
                     </span>
                 </a>
-            </li>
-            @endif
-
-            {{-- @if( in_array(auth()->user()->role->name, ['Administrador']) )
-            <li class="menu-item {{ $title == 'Notificaciones push' ? 'active' : ''}}">
-                <a href="{{url('notificaciones-push')}}" class="menu-link">
-                    <span class="menu-label">
-                        <span class="menu-name">Notificaciones</span>
-                    </span>
-                    <span class="menu-icon">
-                        <i class="icon-placeholder mdi mdi-bell"></i>
-                    </span>
-                </a>
-            </li>
-            @endif --}}
-            
-            @if( in_array(auth()->user()->role->name, ['Administrador', 'App', 'Alterno']) )
-            <li class="menu-item {{ in_array($menu, ['Mi perfil']) ? 'active opened' : ''}}">
-                <a href="{{url('mi-perfil')}}" class="menu-link">
-                    <span class="menu-label">
-                        <span class="menu-name">Mi perfil</span>
-                    </span>
-                    <span class="menu-icon">
-                        <i class="icon-placeholder mdi mdi-account"></i>
-                    </span>
-                </a>
-            </li>
-            @endif
-
-            @if( in_array(auth()->user()->role->name, ['Administrador']) )
-            <li class="menu-item {{ in_array($menu, ['Usuarios']) ? 'active opened' : ''}}">
-                <a href="#" class="open-dropdown menu-link">
-                    <span class="menu-label">
-                        <span class="menu-name">Usuarios<span class="menu-arrow"></span></span>
-                    </span>
-                    <span class="menu-icon"><i class="icon-placeholder mdi mdi-account-group"></i></span>
-                </a>
-                <!--submenu-->
-                <ul class="sub-menu" style="{{ $menu == 'Usuarios' ? 'display: block' : 'display: none'}};">
-                    <li class="menu-item">
-                        @if( in_array(auth()->user()->role->name, ['Administrador']) )
-                        <a href="{{url('usuarios/clientes')}}" class="menu-link">
-                            <span class="menu-label"><span class="menu-name {{ ( in_array($menu, ['Usuarios']) && in_array($title, ['Clientes', 'Formulario de cliente']) ) ? 'sub-ative' :'' }}">Clientes</span></span>
-                        </a>
-                        @endif
-                    </li>
-                </ul>
             </li>
             @endif
 

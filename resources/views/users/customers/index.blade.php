@@ -39,10 +39,10 @@
                             </div>
                             <div class="col-md-9 text-right my-auto filter-section">
                                 <div class="btn-group row" role="group" aria-label="Basic example">
-                                    <div class="no-pad col-md-4">
+                                    <div class="no-pad col-md-6">
                                         <input type="text" class="date-picker form-control" name="fecha_inicio" autocomplete="off" placeholder="Fecha registro inicio">
                                     </div>
-                                    <div class="no-pad col-md-4">
+                                    <div class="no-pad col-md-6">
                                         <input type="text" class="date-picker form-control" name="fecha_fin" autocomplete="off" placeholder="Fecha registro fin">
                                     </div>
                                 </div>

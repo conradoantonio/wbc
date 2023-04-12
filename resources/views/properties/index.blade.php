@@ -238,6 +238,7 @@
 
     // Display charges and payments for a contract
     function displayChargesPayments(response, config) {
+        $('#form-data-sendmail input[name=id]').val(config.id);
         $("table.payments tbody").children().remove();
         $("table.charges tbody").children().remove();
         

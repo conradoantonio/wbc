@@ -117,6 +117,44 @@ class PropertiesController extends Controller
     }
 
     /**
+     * Send the state account by email
+     *
+     */
+    public function generateStateAccountPdfMail( Request $req )
+    {
+        $timer = microtime();
+        $timer = str_replace([' ','.'], '', $timer);
+        $mainPath = 'pdf/'.$timer.'.pdf';
+        $fullPath = $this->createPath($mainPath);
+        $property = Property::where('id', $req->id)->with(['owner', 'payments.status', 'installments.status'])->first();
+
+        if( !$property ) { return response(['msg' => 'Seleccione una propiedad válida para continuar', 'status' => 'error'], 404); }
+
+        $counter = $property->pay_in_advance ? 2 : 1;
+
+        $pdf = PDF::loadView('properties.pdf', ['property' => $property, 'counter' => $counter])
+        ->setPaper('letter')->setWarnings(false)->save($fullPath);
+
+        $files [] = $fullPath;
+
+        $email = $req->sendmail ? $email = explode(",", $req->sendmail) : $property->owner->email;
+
+        $params = array();
+        $params['view']    = 'mails.general';
+        $params['subject'] = 'Estado de cuenta';
+        $params['email']   = $email;
+        $params['content'] = 'Te enviamos tu Estado de Cuenta Electrónico';
+        $params['files']   = ( count($files) ? $files : null );
+
+        $result = $this->f_mail( $params );
+        if ( $result['status'] == 'success' ) {
+            return response(['msg' => 'Estado de cuenta enviado exitósamente', 'status' => 'success', 'url' => $fullPath], 200);
+        }
+
+        return response(['msg' => $result['msg'], 'status' => 'error'], 200);
+    }
+
+    /**
      * Get the state account from a property
      *
      */

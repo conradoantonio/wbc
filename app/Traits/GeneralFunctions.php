@@ -211,6 +211,11 @@ trait GeneralFunctions
                 $message->to($params['email']);
                 $message->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'));
                 $message->subject(env('APP_NAME').' | '.$params['subject']);
+                if ( is_array($params['files']) && count($params['files']) ) {
+                    foreach ($params['files'] as $key => $file) {
+                        $message->attach($file);
+                    }
+                }
             });
             return ['status' => 'success', 'msg' => 'Correo enviado exitósamente'];
         } catch (\Exception $e) {

@@ -89,7 +89,7 @@
             </tr>
             <tr>
                 <td scope="col" class="white-bg" style="width:20%; text-align: center;">Unidad</td>
-                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">L-065</td>
+                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">{{$property->name}}</td>
                 <td scope="col" class="white-bg" style="width:20%; text-align: center;">Porcentaje descuento</td>
                 <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">{{number_format(0.00, 2)}}%</td>
             </tr>
@@ -101,7 +101,7 @@
             </tr>
             <tr>
                 <td scope="col" class="white-bg" style="width:20%; text-align: center;">Plazo</td>
-                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">Regular a 48 meses</td>
+                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">Regular a {{$property->installments->count()}} meses</td>
                 {{-- <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">Ciudad deportiva SC 20,21 y 23 Act. Regular a 48 meses</td> --}}
                 <td scope="col" class="white-bg" style="width:20%; text-align: center;">Total venta</td>
                 <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">${{number_format($property->price, 2)}}</td>
@@ -112,7 +112,8 @@
                 <td scope="col" class="black-bg" style="width:20%; text-align: center;">Total pagado</td>
                 <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">${{number_format($property->payments->sum('amount'), 2)}}</td>
                 <td scope="col" class="black-bg" style="width:20%; text-align: center;">Total por pagar</td>
-                <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">${{ number_format( ($property->price - $property->payments->sum('amount') ), 2) }}</td>
+                <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">${{ number_format( ($property->price - ($property->payments->sum('amount') + floatval($property->pay_in_advance ?? 0.00) ) ), 2) }}</td>
+                {{-- <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">${{ number_format( ($property->price - $property->payments->sum('amount') ), 2) }}</td> --}}
             </tr>
             <tr>
                 {{-- <td scope="col" class="white-bg" style="width:20%; text-align: center;">Precio MT2</td>
