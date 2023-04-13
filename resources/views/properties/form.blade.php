@@ -45,7 +45,7 @@
 
                                 <div class="form-group col-md-12">
                                     <label>Precio*</label>
-                                    <input type="text" class="form-control not-empty" name="price" value="{{$item ? $item->price : ''}}" placeholder="" data-msg="Precio de la propiedad">
+                                    <input type="text" class="form-control not-empty decimal" name="price" value="{{$item ? $item->price : ''}}" placeholder="" data-msg="Precio de la propiedad">
                                 </div>
                                 
                                 @if ( $item )

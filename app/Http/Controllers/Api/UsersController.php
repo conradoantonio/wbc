@@ -189,7 +189,7 @@ class UsersController extends Controller
         if ( $sended['status'] == 'success' ) {
             return response(['msg' => 'Correo enviado exitósamente', 'status' => 'success', 'data' => $newPass], 200);
         } else{
-            return response(['msg' => 'Ocurrió un error tratando de enviar el correo, trate nuevamente', 'status' => 'error'], 200);
+            return response(['msg' => $sended['msg'], 'status' => 'error'], 200);
         }
     }
 

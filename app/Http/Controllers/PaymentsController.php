@@ -170,6 +170,7 @@ class PaymentsController extends Controller
      */
     public function changeStatus(Request $req)
     {
+        $msg = 'Pago validado exitósamente';
         $item = Payment::find($req->id);
         if (! $item ) { return response(['msg' => 'No se encontró el pago a procesar', 'status' => 'error', 'url' => url('pagos')], 404); }
 
@@ -195,9 +196,16 @@ class PaymentsController extends Controller
                 $this->calculateInstallments($item);
             }
 
+            // Se envía el comprobante de pago
+            $resReceipt = $this->generateReceiptPayment($item);
+            if ( $resReceipt['status'] == 'success' ) {
+                $msg = 'Pago validado exitósamente, se ha enviado el comprobante de pago del cliente';
+            } else {
+                $msg = 'Pago validado exitósamente pero no pudo enviarse el comprobante de pago al cliente';
+            }
         }
         $this->saveNotification($user, $msg, $content);
-        return response(['msg' => 'Pago validado exitósamente', 'url' => url('pagos'), 'status' => 'success' ], 200);
+        return response(['msg' => $msg, 'url' => url('pagos'), 'status' => 'success' ], 200);
     }
 
     /**

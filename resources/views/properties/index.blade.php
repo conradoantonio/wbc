@@ -167,7 +167,7 @@
                         $("table.new-date-installments tbody").append(
                             '<tr class="installment" data-id="'+chargeRow.id+'" id="id_detail'+chargeRow.id+'">'+
                                 '<td>'+(count)+'</td>'+
-                                '<td>$'+(parseFloat(amount - amountPaid).toFixed(2))+'</td>'+
+                                '<td>'+(numFormat.format(amount - amountPaid))+'</td>'+
                                 '<td>'+(statusHTML)+'</td>'+
                                 '<td>'+(dateFormate)+'</td>'+
                             '</tr>'
@@ -256,7 +256,8 @@
                     $("table.payments tbody").append(
                         '<tr id="id_detail'+chargeRow.id+'">'+
                             '<td>'+(parseFloat(key)+1)+'</td>'+
-                            '<td>$'+(amount)+'</td>'+
+                            '<td>'+(numFormat.format(amount))+'</td>'+
+                            // '<td>$'+(amount)+'</td>'+
                             '<td>'+(statusHTML)+'</td>'+
                             '<td>'+(dateFormate)+'</td>'+
                             // '<td><button class="btn btn-danger m-b-15 btn-sm detele-row-charge" data-url="/pagos/delete" data-parent="table.charges tbody" data-row-id="'+chargeRow.id+'" data-row-descripcion="'+charges[key_2].amount_str+'" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="mdi mdi-trash-can"></i></button></td>'+
@@ -284,7 +285,8 @@
                     $("table.charges tbody").append(
                         '<tr id="id_detail'+chargeRow.id+'">'+
                             '<td>'+(parseFloat(key_2)+1)+'</td>'+
-                            '<td>$'+(parseFloat(amount - amountPaid).toFixed(2))+'</td>'+
+                            '<td>'+(numFormat.format(amount - amountPaid))+'</td>'+
+                            // '<td>$'+(parseFloat(amount - amountPaid).toFixed(2))+'</td>'+
                             '<td>'+(statusHTML)+'</td>'+
                             '<td>'+(dateFormate)+'</td>'+
                             // '<td><button class="btn btn-danger m-b-15 btn-sm detele-row-charge" data-url="/pagos/delete" data-parent="table.charges tbody" data-row-id="'+chargeRow.id+'" data-row-descripcion="'+charges[key_2].amount_str+'" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="mdi mdi-trash-can"></i></button></td>'+

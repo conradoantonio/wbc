@@ -304,6 +304,8 @@
     id_photos = [];
     var baseUrl = "{{url('')}}";
     var current_user_id = $('meta[name=user-id]').attr('content');
+    const opt = { style: 'currency', currency: 'USD' };
+    const numFormat = new Intl.NumberFormat('en-US', opt);
 </script>
 </body>
 </html>

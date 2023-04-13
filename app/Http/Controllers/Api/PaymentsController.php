@@ -95,6 +95,7 @@ class PaymentsController extends Controller
      */
     public function processOrder(Request $req)
     {
+        set_time_limit(0);
         $paymentType = PaymentType::find($req->payment_type_id);
 
         if (! $paymentType ) { return response(['msg' => 'Especifique un tipo de pago válido', 'status' => 'error'], 200); }
@@ -182,7 +183,10 @@ class PaymentsController extends Controller
         $payment->save();
 
         if ( $paymentType->name == 'Tarjeta' ) {
-            $this->calculateInstallments($payment);    
+            $this->calculateInstallments($payment);
+
+            // Se envía el comprobante de pago
+            $resReceipt = $this->generateReceiptPayment($payment);
         }
         else if ( $paymentType->nombre == 'SPEI' ) {#Se terminan de guardar los datos de spei
 

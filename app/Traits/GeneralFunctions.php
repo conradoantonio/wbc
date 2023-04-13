@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use PDF;
 use Mail;
 use Image;
 
@@ -206,13 +207,14 @@ trait GeneralFunctions
             // $data = ['message' => 'This is a test!'];
             // Mail::to('anton_con@hotmail.com')->send(new SendGeneralMail($data));
             $params['view'] = $params['view'] ?? 'mails.general';
-            Mail::send($params['view'], ['content' => $params], function ($message) use($params)
+            $files = $params['files'] ?? [];
+            Mail::send($params['view'], ['content' => $params], function ($message) use($params, $files)
             {
                 $message->to($params['email']);
                 $message->from(env('MAIL_FROM_ADDRESS'), env('APP_NAME'));
                 $message->subject(env('APP_NAME').' | '.$params['subject']);
-                if ( is_array($params['files']) && count($params['files']) ) {
-                    foreach ($params['files'] as $key => $file) {
+                if ( is_array($files) && count($files) ) {
+                    foreach ($files as $key => $file) {
                         $message->attach($file);
                     }
                 }
@@ -340,6 +342,43 @@ trait GeneralFunctions
             } else {
                 return true;
             }
+        }
+    }
+
+    /**
+     * Send the receipt of payment to a customer automatically
+     *
+     */
+    public function generateReceiptPayment( Payment $payment )
+    {
+        try {
+            $timer = microtime();
+            $timer = str_replace([' ','.'], '', $timer);
+            $mainPath = 'pdf/'.$timer.'.pdf';
+            $fullPath = $this->createPath($mainPath);
+
+            $pdf = PDF::loadView('payments.receipt', ['payment' => $payment])
+            ->setPaper('letter')->setWarnings(false)->save($fullPath);
+
+            $files [] = $fullPath;
+            // return response(['msg' => 'Estado de cuenta enviado exitósamente', 'status' => 'success', 'url' => $fullPath], 200);
+
+            $params = array();
+            $params['view']    = 'mails.general';
+            $params['subject'] = 'Comprobante de pago';
+            $params['email']   = 'anton_con@hotmail.com';
+            // $params['email']   = $payment->owner->email;
+            $params['content'] = 'Hemos recibido tu pago, aquí está el comprobante de tu transacción.';
+            $params['files']   = ( count($files) ? $files : null );
+
+            $result = $this->f_mail( $params );
+            if ( $result['status'] == 'success' ) {
+                return ['msg' => 'Comprobante de pago enviado exitósamente', 'status' => 'success', 'url' => $fullPath];
+            }
+
+            return ['msg' => $result['msg'], 'status' => 'error'];
+        } catch (\Exception $e) {
+            return ['status' => 'error', 'msg' => 'Algo salió mal: '.$e->getMessage()];
         }
     }
 }

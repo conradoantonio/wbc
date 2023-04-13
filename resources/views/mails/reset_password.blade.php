@@ -128,9 +128,9 @@
                     <div class="mj-column-per-100 outlook-group-fix" style="font-size:13px;text-align:center;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                             <tr>
-                                <td style="width:150px;"> 
-                                    <a href="{{url('/')}}" target="_blank">
-                                        <img alt="" height="auto" src="{{asset('img/logo_horizontal_white.png')}}" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:150px;margin-left:auto;margin-right:auto;" width="150">
+                                <td style="width:450px;"> 
+                                    <a href="https://www.muukkarant.com/" target="_blank">
+                                        <img alt="" height="auto" src="https://admin.pagosmuukkarant.com/public/img/logo_horizontal_white.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:150px;margin-left:auto;margin-right:auto;" width="150">
                                     </a> 
                                 </td>
                             </tr>

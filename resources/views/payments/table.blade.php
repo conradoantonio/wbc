@@ -27,7 +27,7 @@
                 <td class="align-middle">
                     {!! $item->status ? '<span class="badge badge-'.$item->status->class.'">'.$item->status->name.'</span>' : '<span class="badge badge-danger">Desconocido</span>' !!}
                 </td>
-                <td class="align-middle">${{$item->amount}} MXN</td>
+                <td class="align-middle">${{number_format($item->amount, 2)}} MXN</td>
                 <td class="align-middle">{{strftime('%d', strtotime($item->created_at)).' de '.strftime('%B', strtotime($item->created_at)). ' del '.strftime('%Y', strtotime($item->created_at))}}</td>
                 <td class="text-center align-middle">
                     <button class="btn btn-secondary btn-sm view-details" data-row-id="{{$item->id}}" data-toggle="tooltip" data-placement="top" title="Ver detalles"><i class="mdi mdi-cash-multiple"></i></button>

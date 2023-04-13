@@ -23,12 +23,12 @@
                     {!! $item->owner ? '<span class="badge badge-info">'.$item->owner->fullname.'</span>' : '<span class="badge badge-danger">Sin propietario</span>' !!}
                 </td>
                 <td class="align-middle">{{$item->name}}</td>
-                <td class="align-middle">${{$item->price}}</td>
+                <td class="align-middle">${{number_format($item->price, 2)}}</td>
                 <td class="align-middle">
-                    {!! $item->pay_in_advance ? '<span class="badge badge-info">$'.$item->pay_in_advance.'</span>' : '<span class="badge badge-danger">N/A</span>' !!}
+                    {!! $item->pay_in_advance ? '<span class="badge badge-info">$'.number_format($item->pay_in_advance, 2).'</span>' : '<span class="badge badge-danger">N/A</span>' !!}
                 </td>
                 <td class="align-middle">
-                    {!! $item->payments->count() ? '<span class="badge badge-info">$'.$item->payments->sum('amount').'</span>' : '<span class="badge badge-danger">N/A</span>' !!}
+                    {!! $item->payments->count() ? '<span class="badge badge-info">$'.number_format($item->payments->sum('amount'), 2).'</span>' : '<span class="badge badge-danger">N/A</span>' !!}
                 </td>
                 <td class="align-middle">{{strftime('%d', strtotime($item->created_at)).' de '.strftime('%B', strtotime($item->created_at)). ' del '.strftime('%Y', strtotime($item->created_at))}}</td>
                 <td class="text-center align-middle">

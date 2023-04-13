@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Estado de cuenta</title>
+    <title>Recibo de pago</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.png') }}"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{asset('css/pdf.css')}}">
@@ -68,7 +68,7 @@
     <table id="" class="borderless uppercase" style="width: 100%;">
         <thead>
             <tr class="">
-                <th class="borderless" style="width:70%; text-align: left;">ESTADO DE CUENTA</th>
+                <th class="borderless" style="width:70%; text-align: left;">RECIBO DE PAGO</th>
                 <th class="borderless" style="width:30%; text-align: right;">{{
                     strftime('%d', strtotime( date('Y-m-d H:i:s') )).' de '.
                     strftime('%B', strtotime( date('Y-m-d H:i:s') )). ' del '.
@@ -100,8 +100,8 @@
                 <td scope="col" class="gray-bg uppercase" style="width:30%; text-align: center;">${{number_format(0.00, 2)}}</td>
             </tr>
             <tr>
-                <td scope="col" class="white-bg" style="width:20%; text-align: center;">Plazo</td>
-                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">Regular a {{$property->installments->count()}} meses</td>
+                <td scope="col" class="white-bg" style="width:20%; text-align: center;">Mensualidades pendientes de pago</td>
+                <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">Regular a {{$property->installments->where('installment_status_id', '!=', 1)->count()}} meses</td>
                 {{-- <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">Ciudad deportiva SC 20,21 y 23 Act. Regular a 48 meses</td> --}}
                 <td scope="col" class="white-bg" style="width:20%; text-align: center;">Total venta</td>
                 <td scope="col" class="white-bg uppercase" style="width:30%; text-align: center;">${{number_format($property->price, 2)}}</td>

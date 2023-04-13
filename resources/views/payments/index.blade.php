@@ -192,7 +192,7 @@
         if ( payment ) {
             let statusHTML  = null; 
             let typeHTML    = null;
-            let amount      = Number(payment.amount).toFixed(2);
+            let amount      = numFormat.format(payment.amount);
             let paymentCreated = moment(payment.created_at);
             let createdFormat  = paymentCreated.format('DD [de] MMMM [del] YYYY');
             let paymentDate    = moment(payment.payment_date);
@@ -219,7 +219,7 @@
             $('.payment_created_formated').text(createdFormat);
             $('.payment_created_formated').parent().parent().removeClass('d-none');
             // Monto
-            $('.payment_amount_format').text('$'+amount+' MXN');
+            $('.payment_amount_format').text(amount+' MXN');
             $('.payment_amount_format').parent().parent().removeClass('d-none');
 
             if ( payment.photo ) {

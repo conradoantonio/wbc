@@ -51,7 +51,7 @@
                                                     <tr>
                                                         {{-- <td class="border-left border-strong border-success">{{$prox->owner ? $prox->owner->fullname : 'N/A'}}</td> --}}
                                                         <td class="border-left border-strong border-success">{!! $prox->owner ? '<span class="badge badge-success">'.$prox->owner->fullname.'</span>' : '<span class="badge badge-danger">Usuario eliminado</span>' !!}</td>
-                                                        <td>${{number_format($prox->amount)}} MXN</td>
+                                                        <td>${{number_format($prox->amount, 2)}} MXN</td>
                                                         <td>
                                                             {!! $prox->type ? '<span class="badge badge-info">'.$prox->type->name.'</span>' : '<span class="badge badge-danger">Desconocido</span>' !!}
                                                         </td>

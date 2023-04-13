@@ -136,6 +136,7 @@ class PropertiesController extends Controller
         ->setPaper('letter')->setWarnings(false)->save($fullPath);
 
         $files [] = $fullPath;
+        // return response(['msg' => 'Estado de cuenta enviado exitósamente', 'status' => 'success', 'url' => $fullPath], 200);
 
         $email = $req->sendmail ? $email = explode(",", $req->sendmail) : $property->owner->email;
 
