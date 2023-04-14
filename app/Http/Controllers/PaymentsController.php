@@ -209,6 +209,25 @@ class PaymentsController extends Controller
     }
 
     /**
+     * Send manually the receipt payment
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function sendReceiptPayment( Request $req )
+    {
+        $item = Payment::where('id', $req->id)->where('payment_status_id', 1)->first();
+        if (! $item ) { return response(['msg' => 'Registro de pago inválido o no aprobado', 'status' => 'error', 'url' => url('pagos')], 400); }
+
+        // Se envía el comprobante de pago
+        $resReceipt = $this->generateReceiptPayment($item);
+        if ( $resReceipt['status'] == 'success' ) {
+            return response(['msg' => 'Recibo de pago enviado exitósamente', 'url' => url('pagos'), 'status' => 'success' ], 200);
+        } else {
+            return response($resReceipt, 500);
+        }
+    }
+
+    /**
      * Export the orders to excel according to the filters.
      *
      * @return \Illuminate\Http\Response

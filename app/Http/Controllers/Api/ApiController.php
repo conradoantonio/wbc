@@ -193,6 +193,7 @@ class ApiController extends Controller
 
                         if ( $user ) {
                             $payment = $this->createNewCustomerPayment($user, $amount / 100, 3);
+                            $resReceipt = $this->generateReceiptPayment($payment);
                         }
                     }
                 }

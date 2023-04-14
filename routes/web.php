@@ -109,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('show/{id?}',[PaymentsController::class, 'show'])->name('payment.show');
         Route::get('excel/export',[PaymentsController::class, 'export'])->name('payment.export');
         Route::post('change-pay-day',[PaymentsController::class, 'updatePaymentDay'])->name('property.updatePaymentDay');
+        Route::post('send-receipt',[PaymentsController::class, 'sendReceiptPayment'])->name('payment.sendReceipt');
         Route::post('filter',[PaymentsController::class, 'filter'])->name('payment.filter');
         Route::post('save',[PaymentsController::class, 'save'])->name('payment.save');
         Route::post('update',[PaymentsController::class, 'update'])->name('payment.update');

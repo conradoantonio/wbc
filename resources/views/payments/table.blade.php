@@ -30,6 +30,9 @@
                 <td class="align-middle">${{number_format($item->amount, 2)}} MXN</td>
                 <td class="align-middle">{{strftime('%d', strtotime($item->created_at)).' de '.strftime('%B', strtotime($item->created_at)). ' del '.strftime('%Y', strtotime($item->created_at))}}</td>
                 <td class="text-center align-middle">
+                    @if($item->payment_status_id == 1)
+                        <button class="btn btn-primary btn-sm send-receipt-to-email" data-row-id="{{$item->id}}" data-toggle="tooltip" data-placement="top" title="Enviar recibo de pago"><i class="mdi mdi-email-check-outline"></i></button>
+                    @endif
                     <button class="btn btn-secondary btn-sm view-details" data-row-id="{{$item->id}}" data-toggle="tooltip" data-placement="top" title="Ver detalles"><i class="mdi mdi-cash-multiple"></i></button>
                     {{-- <button class="btn btn-danger btn-sm delete-row" data-row-id="{{$item->id}}" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="mdi mdi-trash-can"></i></button> --}}
                 </td>

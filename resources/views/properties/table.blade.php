@@ -3,8 +3,8 @@
         <tr>
             <th>ID</th>
             <th>Proyecto</th>
-            <th>Propiedad</th>
             <th>Propietario</th>
+            <th>Propiedad</th>
             <th>Costo propiedad</th>
             <th>Enganche</th>
             <th>Abonado</th>

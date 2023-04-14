@@ -109,6 +109,23 @@
 
         ajaxSimple(config);
     });
+
+    // Visualizar fechas
+    $('body').delegate('.send-receipt-to-email', 'click', function() {
+        let id = $(this).data('row-id');
+
+        config = {
+            'id'        : id,
+            // 'keepModal' : true,
+            'route'     : baseUrl.concat('/pagos/send-receipt'),
+            'method'    : 'POST',
+        }
+
+        loadingMessage('Espere un momento...');
+
+        ajaxSimple(config);
+    });
+    
     
     // Ve los detalles del pago
     $('body').delegate('.view-details', 'click', function() {

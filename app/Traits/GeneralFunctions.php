@@ -366,8 +366,8 @@ trait GeneralFunctions
             $params = array();
             $params['view']    = 'mails.general';
             $params['subject'] = 'Comprobante de pago';
-            $params['email']   = 'anton_con@hotmail.com';
-            // $params['email']   = $payment->owner->email;
+            // $params['email']   = 'anton_con@hotmail.com';
+            $params['email']   = $payment->owner ? $payment->owner->email : 'contacto@wbc.com';
             $params['content'] = 'Hemos recibido tu pago, aquí está el comprobante de tu transacción.';
             $params['files']   = ( count($files) ? $files : null );
 
